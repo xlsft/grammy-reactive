@@ -36,11 +36,19 @@ export async function createFragmentElementRender<
     elements: MaybeArray<JSX.Element>,
     options: RenderedMessageOptions<C, Other>,
     noMedia?: boolean
-): Promise<[string, IntrinsicElements["img"][]] | [string]> {
+    /** TODO:
+     * Uncomment this when caption rerender is fixed
+     * */
+//): Promise<[string, IntrinsicElements["img"][]] | [string]> {
+): Promise<[string, any[]] | [string]> {
     const array = Array.isArray(elements) ? elements : [elements];
-    let out = ""; const media: IntrinsicElements["img"][] = [];
+    const media: any[] = [];
+    /** TODO:
+     * Uncomment this when caption rerender is fixed
+     * */
+    // const media: IntrinsicElements["img"][] = [];
 
-    for (let i = 0; i < array.length; i++) {
+    let out = ""; for (let i = 0; i < array.length; i++) {
         const current = array[i]; if (current == null) continue;
         const element = await current, type = element.type;
 

@@ -37,7 +37,11 @@ export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>):
                 >({
                     method: "repl", id,
                     jsx: content, ctx, other: {},
-                    unallowed: ['img']
+                    unallowed: []
+                    /** TODO:
+                     * Uncomment this when caption rerender is fixed
+                     * */
+                    // unallowed: ['img']
                 })
                 other = message.other
                 if (!message) throw new JSXParseError("No message rendered")
