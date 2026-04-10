@@ -3,7 +3,7 @@
     "name": "@xlsft/grammy-reactive",
     "description": "Reactive handlers with JSX for grammY",
     "license": "MIT",
-    "version": "0.4.12",
+    "version": "0.7.34",
     "engines": {
         "node": ">=14.17.0"
     },
