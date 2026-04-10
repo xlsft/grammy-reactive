@@ -64,7 +64,7 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
             t('s', (await createFragmentElementRender(element.children, options, true))[0])
         ]
         case 'h': return [
-            t('b', (await createFragmentElementRender(element.children, options, true))[0]) + '\n'
+            t('b', (await createFragmentElementRender(element.children, options, true))[0]) + '\n\n'
         ]
         case 'a': return [
             t('a', (await createFragmentElementRender(element.children, options, true))[0], {
