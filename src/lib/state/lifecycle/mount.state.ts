@@ -37,6 +37,9 @@ export async function createMountMessageState<C extends ReactiveContext>({ id, c
             if (!message) throw new Error("Failed to send message")
             globalCurrentState[id] = message
         } else if (data.view === 'caption') {
+            /** TODO:
+             * Fix caption rerender
+             * */
             if (data.media.length > 2) {
                 const messages = await ctx.replyWithMediaGroup(data.media.slice(0, 10), data.other)
                 if (!messages || !messages[0]) throw new Error("Failed to send media group")

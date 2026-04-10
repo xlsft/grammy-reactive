@@ -85,6 +85,11 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
         case 'spoiler': return [
             t('tg-spoiler', (await createFragmentElementRender(element.children, options, true))[0])
         ]
+        case "mention": return [
+            t('a', (await createFragmentElementRender(element.children, options, true))[0], {
+                href: `tg://user?id=${element.entity.id}`
+            })
+        ]
         case 'emoji': {
             const alt = getPlainText(element) || '👍'
             if (!isEmoji(alt)) throw new JSXParseError(`Emoji alt property is not a valid emoji: ${alt}`);

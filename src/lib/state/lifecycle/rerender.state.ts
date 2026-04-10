@@ -41,6 +41,11 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
                     committed = true
                 }
             } else if (data.view === 'caption') {
+
+                /** TODO:
+                 * Fix caption rerender
+                 * */
+                console.log(globalPreviousState[id]?.caption, data.text)
                 if (globalPreviousState[id]?.caption !== data.text) await ctx.api.editMessageCaption(
                     globalCurrentState[id].chat.id,
                     globalCurrentState[id].message_id,
@@ -49,6 +54,7 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
                 )
                 if (data.media.length > 2) {
                     ctx.deleteMessage(controller?.signal as any)
+
                     const messages = await ctx.replyWithMediaGroup(data.media.slice(0, 10), data.other, controller?.signal as any)
                     if (!messages || !messages[0]) throw new Error("Failed to send media group")
                     globalCurrentState[id] = messages[0]
@@ -58,7 +64,7 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
                         globalCurrentState[id].chat.id,
                         globalCurrentState[id].message_id,
                         data.media[0]!,
-                        data.other,
+                        { ...data.other, caption: undefined },
                         controller?.signal as any
                     ) as Message.PhotoMessage;
                     if (!message) throw new Error("Failed to send photo")

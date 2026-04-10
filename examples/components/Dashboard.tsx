@@ -1,31 +1,6 @@
-import {
-    useState,
-    useMemo,
-    useCallback,
-    useReducer,
-    useEffect,
-    useContext,
-} from "~/lib";
+import { useState, useMemo, useCallback, useReducer, useEffect, useContext } from "~/lib";
 
-type Action =
-    | { type: "inc" }
-    | { type: "dec" }
-    | { type: "reset" };
-
-function reducer(state: number, action: Action) {
-    switch (action.type) {
-        case "inc":
-            return state + 1;
-        case "dec":
-            return state - 1;
-        case "reset":
-            return 0;
-        default:
-            return state;
-    }
-}
-
-function StatusBadge({ count }: { count: number }) {
+const StatusBadge = ({ count }: { count: number }) => {
     const status = useMemo(() => {
         if (count === 0) return "⚪ Idle";
         if (count > 0) return "🟢 Positive";
@@ -35,68 +10,54 @@ function StatusBadge({ count }: { count: number }) {
     return <b>{status}</b>;
 }
 
-export default function Dashboard() {
-    const ctx = useContext();
+export const Dashboard = () => {
 
-    const [count, dispatch] = useReducer(reducer, 0);
+    const ctx = useContext();
+    const [count, dispatch] = useReducer((state: number, action: "inc" | "dec" | "reset") => {
+        switch (action) {
+            case "inc": return state + 1;
+            case "dec": return state - 1;
+            case "reset": return 0;
+            default: return state;
+        }
+    }, 0);
     const [ticks, setTicks] = useState(0);
     const [live, setLive] = useState(true);
-
     const doubled = useMemo(() => count * 2, [count]);
-
-    const increment = useCallback(() => {
-        dispatch({ type: "inc" });
-    }, []);
-
-    const decrement = useCallback(() => {
-        dispatch({ type: "dec" });
-    }, []);
-
-    const reset = useCallback(() => {
-        dispatch({ type: "reset" });
-    }, []);
-
-    const toggleLive = useCallback(() => {
-        setLive(v => !v);
-    }, []);
+    const increment = useCallback(() => dispatch("inc"), []);
+    const decrement = useCallback(() => dispatch("dec"), []);
+    const reset = useCallback(() => dispatch("reset"), []);
+    const toggleLive = useCallback(() => setLive(v => !v), []);
 
     useEffect(() => {
         if (!live) return;
-
         const interval = setInterval(() => {
             setTicks(t => t + 1);
         }, 1000);
-
         return () => clearInterval(interval);
     }, [live]);
 
     return (
         <>
-            <h>🚀 Smart Counter Dashboard</h>
+            <preview src={`https://picsum.photos/640/640?random=${count}`} position="bottom" />
+            <h>Hi! <mention id={ctx.from?.id!}>{ctx.from?.first_name}</mention>, 🚀 This is Smart Counter Dashboard!</h>
 
             <blockquote>
-                Count: <b>{count}</b>
-                <br />
-                Doubled: <code>{doubled}</code>
-                <br />
-                Uptime: <b>{ticks}s</b>
-                <br />
+                Count: <b>{count}</b><br />
+                Doubled: <code>{doubled}</code><br />
+                Uptime: <b>{ticks}s</b><br />
                 Status: <StatusBadge count={count} />
+                Image: {`https://picsum.photos/640/640?random=${count}`}
             </blockquote>
 
             <button onClick={increment}>➕ Increment</button>
             <button onClick={decrement} row>➖ Decrement</button>
             <button onClick={reset}>♻️ Reset</button>
-            <button onClick={toggleLive}>
-                {live ? "⏸ Pause Timer" : "▶️ Resume Timer"}
-            </button>
+            <button onClick={toggleLive} row>{live ? "⏸ Pause Timer" : "▶️ Resume Timer"}</button>
 
-            {count > 10 ? (
-                <>
-                    <br />
-                    <i>🏆 High score mode unlocked</i>
-                </>
-            ) : null}
+            <button variant="copy" value={count.toString()} row>Copy current count!</button>
+            <button variant="url" url="https://github.com/xlsft/grammy-reactive" row>Open repository</button>
+            {count > 10 ? (<><br /><i>🏆 High score mode unlocked</i></>) : null}
         </>
     );
 }

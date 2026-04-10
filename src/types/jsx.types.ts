@@ -52,9 +52,13 @@ export const intrinsicElements = {
     h: {} as WithChildren,
     p: {} as WithChildren,
     br: {} as {},
-    img: {} as { src: string; position?: "top" | "bottom"; spoiler?: boolean },
+    /** TODO:
+     * When caption rerender is fixed, uncomment this
+     * */
+    // img: {} as { src: string; position?: "top" | "bottom"; spoiler?: boolean },
     preview: {} as { src: string; position?: "top" | "bottom"; size?: "small" | "large" },
     button: {} as WithChildren<InlineButtonProps>,
+    mention: {} as WithChildren<{ id: number }>,
 } satisfies Record<string, unknown>;
 
 /**
