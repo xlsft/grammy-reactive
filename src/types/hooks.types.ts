@@ -11,6 +11,9 @@ export type HookRuntime = {
     hookCursor: number
     effects: Array<() => Promise<void>>;
     visited: Set<string>
+    renderVersion: number
+    isRendering: boolean
+    pendingRender: boolean
 };
 
 export type MemoHook<T> = {

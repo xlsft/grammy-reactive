@@ -8,22 +8,12 @@ export const Timer = () => {
         console.log("⏱ timer mounted");
 
         const interval = setInterval(async () => {
-            await setSeconds(prev => {
-                const next = prev + 1;
-
-                ctx.api.setMessageReaction(
-                    ctx.chat?.id!,
-                    ctx.message?.message_id!,
-                    [
-                        {
-                            type: "emoji",
-                            emoji: next % 2 === 0 ? "🌚" : "🔥",
-                        },
-                    ]
-                );
-
-                return next;
-            });
+            setSeconds(prev => prev + 1);
+            await ctx.api.setMessageReaction(
+                ctx.chat?.id!,
+                ctx.message?.message_id!,
+                [{ type: "emoji", emoji: seconds % 2 === 0 ? '🌚' : '🔥' }]
+            );
         }, 1000);
 
         return () => {
@@ -34,7 +24,7 @@ export const Timer = () => {
 
     return (
         <>
-            <h>⏱ Timer</h>
+            <h>⏱ Live Timer</h>
             <blockquote>
                 Running for <b>{seconds}</b> seconds
             </blockquote>

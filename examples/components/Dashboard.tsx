@@ -85,7 +85,7 @@ export default function Dashboard() {
             </blockquote>
 
             <button onClick={increment}>➕ Increment</button>
-            <button onClick={decrement}>➖ Decrement</button>
+            <button onClick={decrement} row>➖ Decrement</button>
             <button onClick={reset}>♻️ Reset</button>
             <button onClick={toggleLive}>
                 {live ? "⏸ Pause Timer" : "▶️ Resume Timer"}

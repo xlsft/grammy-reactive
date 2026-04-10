@@ -39,16 +39,31 @@ export function createMessageState<C extends ReactiveContext>({ id, ctx, handler
             })
         },
         async rerender() {
-            await withRuntime(runtime, async () => {
-                this.controller?.abort(); this.controller = new AbortController();
-                await createRerenderMessageState({
-                    id: _id,
-                    ctx,
-                    handler,
-                    controller: this.controller,
-                    state: this
-                })
-            })
+            if (runtime.isRendering) {
+                runtime.pendingRender = true;
+                return;
+            }
+            runtime.isRendering = true;
+            try {
+                await withRuntime(runtime, async () => {
+                    this.controller?.abort();
+                    this.controller = new AbortController();
+
+                    await createRerenderMessageState({
+                        id: _id,
+                        ctx,
+                        handler,
+                        controller: this.controller,
+                        state: this,
+                    });
+                });
+            } finally {
+                runtime.isRendering = false;
+                if (runtime.pendingRender) {
+                    runtime.pendingRender = false;
+                    await this.rerender();
+                }
+            }
         },
         async unmount() {
             await withRuntime(runtime, async () => {
@@ -82,6 +97,9 @@ export function createMessageState<C extends ReactiveContext>({ id, ctx, handler
         childCursorStack: [0],
         hookCursor: 0,
         effects: [],
+        renderVersion: 0,
+        isRendering: false,
+        pendingRender: false,
     };
     return state
 }
