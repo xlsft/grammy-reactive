@@ -1,0 +1,18 @@
+import { useMemo, useState } from "~/lib"
+
+export const Counter = async () => {
+    const [count, setCount] = useState(0)
+    const double = useMemo(() => count * 2, [count])
+
+    return <>
+        <p>{count}, double: {double}</p>
+        {count > 0 ?
+            <button variant='callback' onClick={() => setCount(Math.max(count - 1))}>
+                -
+            </button>
+        : null }
+        <button variant='callback' onClick={() => setCount(count + 1)} row>
+            +
+        </button>
+    </>
+}

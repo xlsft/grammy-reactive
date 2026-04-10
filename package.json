@@ -1,0 +1,61 @@
+{
+    "type": "module",
+    "name": "@xlsft/grammy-reactive",
+    "description": "Reactive handlers with JSX for grammY",
+    "license": "MIT",
+    "version": "0.4.12",
+    "engines": {
+        "node": ">=14.17.0"
+    },
+    "author": "xlsft",
+    "homepage": "https://cv.xlsft.ru/en/projects/grammy-reactive",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/xlsft/grammy-reactive.git"
+    },
+    "bugs": {
+        "url": "https://github.com/xlsft/grammy-reactive/issues"
+    },
+    "module": "true",
+    "main": "./dist/lib/index.js",
+    "types": "./dist/lib/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/lib/index.d.ts",
+            "import": "./dist/lib/index.js"
+        },
+        "./jsx": {
+            "types": "./dist/jsx/index.d.ts",
+            "import": "./dist/jsx/index.js"
+        },
+        "./jsx/jsx-runtime": {
+            "types": "./dist/jsx/jsx-runtime.d.ts",
+            "import": "./dist/jsx/jsx-runtime.js"
+        },
+        "./jsx/jsx-dev-runtime": {
+            "types": "./dist/jsx/jsx-dev-runtime.d.ts",
+            "import": "./dist/jsx/jsx-dev-runtime.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "bun run --watch examples/main.tsx",
+        "build": "tsc -p tsconfig.build.json"
+    },
+    "devDependencies": {
+        "@types/node": "^25.6.0",
+        "typescript": "^5"
+    },
+    "peerDependencies": {
+        "grammy": ">=1.0.0 <2"
+    },
+    "keywords": [
+        "declarative",
+        "library",
+        "jsx",
+        "grammy",
+        "bot"
+    ]
+}
