@@ -43,8 +43,12 @@ import type { OtherContexted } from "src/types/grammy.types";
 export async function createIntrinsicElementRender<C extends ReactiveContext, Other extends OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">>(
     element: IntrinsicElement,
     options: RenderedMessageOptions<C, Other>
-): Promise<[string, (IntrinsicElements['img'][])] | [string]> {
-    const media: IntrinsicElements['img'][] = [];
+): Promise<[string, (any[])] | [string]> {
+    /** TODO:
+     * When caption rerender is fixed, uncomment this
+     * */
+//): Promise<[string, (IntrinsicElements['img'][])] | [string]> {
+    // const media: IntrinsicElements['img'][] = [];
     if (options.unallowed && options.unallowed.includes(element.entity.type)) {
         throw new JSXParseError(`Elements: ${options.unallowed.join(', ')} is not allowed in "${options.method}" method`)
     }
@@ -106,10 +110,13 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
                 })
             ]
         }
-        case "img": {
-            media.push(element.entity)
-            return ['', media]
-        }
+        /** TODO:
+         * When caption rerender is fixed, uncomment this
+         * */
+        // case "img": {
+        //     media.push(element.entity)
+        //     return ['', media]
+        // }
         case "preview": {
             if (options.other.link_preview_options) throw new JSXParseError("Preview in this state are already set")
             options.other.link_preview_options = {
@@ -151,6 +158,10 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
             }
             return ['']
         }
-        default: return ['', media]
+        /** TODO:
+         * When caption rerender is fixed, uncomment this
+         * */
+        // default: return ['', media]
+        default: return ['', []]
     }
 }
