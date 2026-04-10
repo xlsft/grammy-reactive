@@ -46,12 +46,12 @@ export const Dashboard = () => {
                 Count: <b>{count}</b><br />
                 Doubled: <code>{doubled}</code><br />
                 Uptime: <b>{ticks}s</b><br />
-                Status: <StatusBadge count={count} />
+                Status: <StatusBadge count={count} /><br />
                 Image: {`https://picsum.photos/640/640?random=${count}`}
             </blockquote>
 
-            <button onClick={increment}>➕ Increment</button>
-            <button onClick={decrement} row>➖ Decrement</button>
+            <button onClick={decrement} >➖ Decrement</button>
+            <button onClick={increment} row>➕ Increment</button>
             <button onClick={reset}>♻️ Reset</button>
             <button onClick={toggleLive} row>{live ? "⏸ Pause Timer" : "▶️ Resume Timer"}</button>
 
