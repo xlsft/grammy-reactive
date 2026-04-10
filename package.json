@@ -1,7 +1,7 @@
 {
     "type": "module",
     "name": "@xlsft/grammy-reactive",
-    "description": "Reactive handlers with JSX for grammY",
+    "description": "React-like stateful library for grammY",
     "license": "MIT",
     "version": "0.7.34",
     "engines": {
