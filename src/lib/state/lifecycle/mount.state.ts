@@ -4,6 +4,7 @@ import { globalCurrentState, globalPreviousState } from "src/utils"
 import type { ReactiveContext } from "src/types/plugin.types"
 import { InternalError } from "~/lib/render/components/Error"
 import { flushEffects } from "../hooks/effect.hooks"
+import { isAbortError } from "~/utils/isAbortError"
 
 export async function createMountMessageState<C extends ReactiveContext>({ id, ctx, handler, controller, state }: {
     id: string,
@@ -51,6 +52,7 @@ export async function createMountMessageState<C extends ReactiveContext>({ id, c
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
     } catch (e) {
+        if (isAbortError(e)) return;
         console.error(e)
         await state.error(e as Error)
     }

@@ -3,6 +3,7 @@ import { reactive } from "./plugin";
 import { generateUniqueId } from "~/utils";
 import { createMessageState } from "./state/create.state";
 import type { ReactiveContext } from "~/types/plugin.types";
+import { isAbortError } from "~/utils/isAbortError";
 
 export function defineMessageHandler<C extends ReactiveContext>(
     handler: BotMessageHandler<C>
@@ -13,6 +14,7 @@ export function defineMessageHandler<C extends ReactiveContext>(
         try {
             await state.mount()
         } catch (e) {
+            if (isAbortError(e)) return;
             await state.error(e as Error)
         }
     }

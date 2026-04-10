@@ -2,6 +2,7 @@ import { globalButtonCallbacks, globalStates } from "~/utils"
 import { createErrorMessageState } from "../lifecycle/error.state"
 import type { ReactiveContext } from "~/types/plugin.types"
 import type { NextFunction } from "~/types/grammy.types"
+import { isAbortError } from "~/utils/isAbortError"
 
 /**
  * Dispatches registered reactive button callbacks for callback queries.
@@ -31,6 +32,7 @@ export async function createOnClickEvent(ctx: ReactiveContext, next: NextFunctio
         await ctx.answerCallbackQuery()
         await next()
     } catch (e) {
+        if (isAbortError(e)) return;
         console.error(e)
         await state.error(e as Error)
     }

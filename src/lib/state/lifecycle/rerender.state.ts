@@ -4,6 +4,7 @@ import { createMessageRender } from "~/lib/render/message.render"
 import type { ReactiveContext } from "~/types/plugin.types"
 import type { Message } from "~/types/grammy.types"
 import { flushEffects } from "../hooks/effect.hooks"
+import { isAbortError } from "~/utils/isAbortError"
 
 export async function createRerenderMessageState<C extends ReactiveContext>({ id, ctx, handler, controller, state }: {
     id: string,
@@ -60,10 +61,13 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
             } else throw new TypeError("No media provided for caption view")
             committed = true
         }
-        if (committed) await flushEffects()
+        if (committed && !controller?.signal.aborted) {
+            await flushEffects();
+        }
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
     } catch (e) {
+        if (isAbortError(e)) return;
         console.error(e)
         await state.error(e as Error)
     }
