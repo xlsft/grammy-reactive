@@ -3,14 +3,14 @@
     "version": "0.8.8",
     "license": "MIT",
     "exports": {
-        ".": "./dist/lib/index.js",
-        "./jsx": "./dist/jsx/index.js",
-        "./jsx/jsx-runtime": "./dist/jsx/jsx-runtime.js",
-        "./jsx/jsx-dev-runtime": "./dist/jsx/jsx-dev-runtime.js"
+        ".": "./src/lib/index.ts",
+        "./jsx": "./src/jsx/index.ts",
+        "./jsx/jsx-runtime": "./src/jsx/jsx-runtime.ts",
+        "./jsx/jsx-dev-runtime": "./src/jsx/jsx-dev-runtime.ts"
     },
     "publish": {
         "include": [
-            "dist",
+            "src",
             "README.md",
             "LICENSE"
         ]
