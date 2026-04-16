@@ -1,4 +1,4 @@
-import { useState } from "src/lib";
+import { useState } from "../../src/lib";
 
 export const Calculator = async () => {
 

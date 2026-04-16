@@ -1,13 +1,12 @@
 import { InlineKeyboard, InputMediaBuilder, Keyboard } from "grammy";
 import { createFragmentElementRender } from "./fragmemt.render";
-import { generateUniqueId, isEmoji, isUnixTime } from "src/utils";
+import { generateUniqueId, isEmoji, isUnixTime, getEmoji, getPlainText, globalButtonCallbacks } from "../../../utils";
 import { createTagRender as t } from "../tag.render";
-import { getEmoji, getPlainText, globalButtonCallbacks } from "src/utils";
-import { JSXParseError } from "src/jsx/runtime/jsx.errors";
-import type { ExactInlineButtonProps, IntrinsicElement } from "src/types/jsx.types";
+import { JSXParseError } from "../../../jsx/runtime/jsx.errors";
+import type { ExactInlineButtonProps, IntrinsicElement } from "../../../types/jsx.types";
 import type { ReactiveContext } from "../../../types/plugin.types";
-import type { RenderedMessageOptions } from "src/types/lib.types";
-import type { OtherContexted, InputMediaOmitAnimation } from "src/types/grammy.types";
+import type { RenderedMessageOptions } from "../../../types/lib.types";
+import type { OtherContexted, InputMediaOmitAnimation } from "../../../types/grammy.types";
 
 /**
  * Renders a single intrinsic JSX node into its Telegram-compatible HTML string output.

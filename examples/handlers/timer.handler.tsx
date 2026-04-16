@@ -1,5 +1,5 @@
 import { Timer } from "examples/components/Timer";
-import { defineMessageHandler } from "src/lib";
+import { defineMessageHandler } from "../../src/lib";
 
 export default defineMessageHandler(async () => {
     return <>

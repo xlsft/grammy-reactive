@@ -1,5 +1,5 @@
-import type { RenderedMessageOptions } from "src/types/lib.types";
-import type { JSX } from "src/types/jsx.types";
+import type { RenderedMessageOptions } from "../../../types/lib.types";
+import type { JSX } from "../../../types/jsx.types";
 import { createIntrinsicElementRender } from "./intrinsic.render";
 import { createPlainElementRender } from "./plain.render";
 import type { ReactiveContext } from "../../../types/plugin.types";
