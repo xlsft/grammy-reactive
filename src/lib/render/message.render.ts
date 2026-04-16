@@ -1,8 +1,7 @@
 import { createFragmentElementRender } from "./node/fragmemt.render";
-import { InputMediaBuilder, InputFile } from "~/types/grammy.types";
 import type { ReactiveContext } from "~/types/plugin.types";
 import type { RenderedMessage, RenderedMessageOptions } from "~/types/lib.types";
-import type { OtherContexted, InputMediaPhoto } from "~/types/grammy.types";
+import type { OtherContexted } from "~/types/grammy.types";
 import { InternalError } from "./components/Error";
 
 /**
@@ -48,12 +47,15 @@ export async function createMessageRender<C extends ReactiveContext, Other exten
         const tree = await options.jsx;
 
         const [text, media] = await createFragmentElementRender(tree, options);
-
+        if (media?.length) {
+            (options.other as any).caption = text.slice(0, 1024);
+            if (media.length > 1 && options.other.reply_markup) throw new Error('Reply markup not supported for media groups');
+        }
         return {
-            text: text.slice(0, media?.length ? 1024 : 4096),
+            text: text.slice(0, 4096),
             other: options.other,
             view: media?.length ? 'caption' : 'message',
-            media: (media ?? []).slice(0, 10)
+            media: (media ?? []).slice(0, 10).map(v => ({ ...v, ...options.other, caption: text.slice(0, 1024) }))
         };
     } catch (e) {
         const message = await createMessageRender({

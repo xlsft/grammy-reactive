@@ -2,10 +2,12 @@ import type { BotHandlerLifecycleInstance, BotMessageHandler } from "~/types/lib
 import { globalCurrentState, globalHookRuntimeAsyncStorage, globalPreviousState } from "~/utils"
 import { createMessageRender } from "~/lib/render/message.render"
 import type { ReactiveContext } from "~/types/plugin.types"
-import type { Message } from "~/types/grammy.types"
 import { flushEffects } from "../hooks/effect.hooks"
 import { isAbortError } from "~/utils/isAbortError"
 import { isMessageNotFound } from "~/utils/isMessageNotFount"
+import { safeHandler } from "~/utils/safeHandler"
+import { createHash } from "~/utils/createHash"
+import type { Message } from "grammy/types"
 
 export async function createRerenderMessageState<C extends ReactiveContext>({ id, ctx, handler, controller, state }: {
     id: string,
@@ -15,74 +17,47 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
     state: BotHandlerLifecycleInstance<C>
 }) {
     try {
-        const runtime = globalHookRuntimeAsyncStorage.getStore()!
-        const version = ++runtime.renderVersion;
-        let committed = false;
-        if (!globalCurrentState[id] || controller?.signal.aborted) return
-        const element = await handler({ ctx, id, controller } as any)
-        const data = await createMessageRender({
-            id,
-            method: createRerenderMessageState.name,
-            jsx: element,
-            ctx,
-            other: {} as any,
-        })
-        if (version !== runtime.renderVersion) return;
-        try {
-            if (data.view === 'message') {
-                if (globalPreviousState[id]?.text !== data.text) {
-                    await ctx.api.editMessageText(
-                        globalCurrentState[id].chat.id,
-                        globalCurrentState[id].message_id,
-                        data.text,
-                        data.other,
-                        controller?.signal as any
-                    )
-                    committed = true
-                }
-            } else if (data.view === 'caption') {
+        let committed = false; if (!globalCurrentState[id] || !globalPreviousState[id] || controller?.signal.aborted) return
+        const previous = globalPreviousState[id], current = globalCurrentState[id]
+        const target = { chat: current.message.chat.id, message: current.message.message_id }
+        const runtime = globalHookRuntimeAsyncStorage.getStore()!, version = ++runtime.renderVersion;
 
-                /** TODO:
-                 * Fix caption rerender
-                 * */
-                console.log(globalPreviousState[id]?.caption, data.text)
-                if (globalPreviousState[id]?.caption !== data.text) await ctx.api.editMessageCaption(
-                    globalCurrentState[id].chat.id,
-                    globalCurrentState[id].message_id,
-                    data.other,
-                    controller?.signal as any
-                )
-                if (data.media.length > 2) {
-                    ctx.deleteMessage(controller?.signal as any)
+        const jsx = safeHandler({ handler, ctx, id, controller }); if (version !== runtime.renderVersion) return
+        const render = await createMessageRender({ id, method: createRerenderMessageState.name, jsx, ctx, other: {} as any }), hash = createHash(render)
 
-                    const messages = await ctx.replyWithMediaGroup(data.media.slice(0, 10), data.other, controller?.signal as any)
-                    if (!messages || !messages[0]) throw new Error("Failed to send media group")
-                    globalCurrentState[id] = messages[0]
-                } else if (data.media.length === 1) {
-                    if (!data.media[0]) throw new Error("No photo provided for caption view")
-                    const message = await ctx.api.editMessageMedia(
-                        globalCurrentState[id].chat.id,
-                        globalCurrentState[id].message_id,
-                        data.media[0]!,
-                        { ...data.other, caption: undefined },
-                        controller?.signal as any
-                    ) as Message.PhotoMessage;
-                    if (!message) throw new Error("Failed to send photo")
-                    globalCurrentState[id] = message
-                } else throw new TypeError("No media provided for caption view")
-                committed = true
+        if (hash === previous.hash) return
+
+        if (render.view === 'message') {
+            if (previous.render.text !== render.text)
+                await ctx.api.editMessageText(target.chat, target.message, render.text, render.other, controller?.signal as any)
+        } else if (render.view === 'caption') {
+            if (previous.render.media.length > 1 || render.media.length > 1) {
+                await ctx.api.deleteMessage(target.chat, target.message, controller?.signal as any)
+                let message; if (render.media.length > 1) message = (await ctx.api.sendMediaGroup(target.chat, render.media, render.other, controller?.signal as any))[0]
+                else if (render.media[0]?.type === 'photo') message = await ctx.api.sendPhoto(target.chat, render.media[0]?.media!, render.other)
+                else if (render.media[0]?.type === 'video') message = await ctx.api.sendVideo(target.chat, render.media[0]?.media!, render.other)
+                else if (render.media[0]?.type === 'document') message = await ctx.api.sendDocument(target.chat, render.media[0]?.media!, render.other)
+                else if (render.media[0]?.type === 'audio') message = await ctx.api.sendAudio(target.chat, render.media[0]?.media!, render.other)
+                else throw new Error("Unsupported media type")
+                if (!message) throw new Error("Failed to rerender media group")
+                globalCurrentState[id] = { message, render, hash }
+            } else if (render.media[0] && (previous.render.media[0]?.media !== render.media[0]?.media || previous.render.media[0]?.type !== render.media[0]?.type)) {
+                const message = await ctx.api.editMessageMedia(target.chat, target.message, render.media[0]!, controller?.signal as any)
+                if (!message || message === true) throw new Error("Failed to edit message media")
+                globalCurrentState[id] = { message, render, hash }
+            } else if (previous.render.text !== render.text) {
+                const message = await ctx.api.editMessageCaption(target.chat, target.message, render.other, controller?.signal as any)
+                if (!message || message === true) throw new Error("Failed to edit message media")
+                globalCurrentState[id] = { message, render, hash }
             }
-        } catch (e) {
-            if (!isMessageNotFound(e)) throw e;
-        }
+        } else throw new TypeError(`Undefined view on rerender: ${render.view}`); committed = true
 
-        if (committed && !controller?.signal.aborted) {
-            await flushEffects();
-        }
+        if (committed && !controller?.signal.aborted) await flushEffects();
+
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
     } catch (e) {
-        if (isAbortError(e)) return;
+        if (isAbortError(e) && isMessageNotFound(e)) return;
         console.error(e)
         await state.error(e as Error)
     }

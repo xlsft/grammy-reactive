@@ -39,7 +39,7 @@ export const Dashboard = () => {
 
     return (
         <>
-            <preview src={`https://picsum.photos/640/640?random=${count}`} position="bottom" />
+            <media src={`https://picsum.photos/640/640?random=${count}`} />
             <h>Hi! <mention id={ctx.from?.id!}>{ctx.from?.first_name}</mention>, 🚀 This is Smart Counter Dashboard!</h>
 
             <blockquote>
@@ -49,8 +49,7 @@ export const Dashboard = () => {
                 Status: <StatusBadge count={count} /><br />
                 Image: {`https://picsum.photos/640/640?random=${count}`}
             </blockquote>
-
-            <button onClick={decrement} >➖ Decrement</button>
+            <button onClick={decrement}>➖ Decrement</button>
             <button onClick={increment} row>➕ Increment</button>
             <button onClick={reset}>♻️ Reset</button>
             <button onClick={toggleLive} row>{live ? "⏸ Pause Timer" : "▶️ Resume Timer"}</button>

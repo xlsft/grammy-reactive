@@ -1,26 +1,17 @@
-import {
-    InputFile,
-    Keyboard,
-    InlineKeyboard,
-    InputMediaBuilder,
-    Composer,
-    Bot
-} from "grammy";
 import type {
-    Context,
-    MiddlewareFn,
     RawApi,
-    NextFunction,
 } from "grammy";
 import type {
-    Message,
-    MessageEntity,
-    Update,
     InputMediaPhoto,
-    InlineKeyboardButton,
+    InputMediaVideo,
+    InputMediaDocument,
+    InputMediaAudio,
 } from "grammy/types";
 import type { Other } from "node_modules/grammy/out/core/api.d.ts";
 import type { Methods } from "node_modules/grammy/out/core/client.d.ts";
+
+export type InputMediaOmitAnimation = (InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo)
+export type InputMediaArrayOmitAnimation = readonly InputMediaOmitAnimation[]
 
 /**
  * A convenience alias for Grammy's {@link Other} utility type,
@@ -42,13 +33,4 @@ import type { Methods } from "node_modules/grammy/out/core/client.d.ts";
  *     "text" | "chat_id" | "parse_mode"
  * >;
  */
-type OtherContexted<M extends Methods<RawApi>, X extends string = never> = Other<RawApi, M, X>;
-
-export type {
-    Context, MiddlewareFn, RawApi, NextFunction,
-    Message, MessageEntity, Update, InputMediaPhoto, InlineKeyboardButton,
-    Other, Methods, OtherContexted,
-}
-export {
-    InputFile, Keyboard, InlineKeyboard, InputMediaBuilder, Bot
-}
+export type OtherContexted<M extends Methods<RawApi>, X extends string = never> = Other<RawApi, M, X>;

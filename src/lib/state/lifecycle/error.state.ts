@@ -3,6 +3,7 @@ import { createMessageRender } from "~/lib/render/message.render"
 import type { ReactiveContext } from "~/types/plugin.types"
 import { globalCurrentState, globalPreviousState, globalStates } from "~/utils"
 import { flushEffects } from "../hooks/effect.hooks"
+import { createHash } from "~/utils/createHash"
 
 /**
  * Replaces the current rendered message with an internal error fallback.
@@ -29,26 +30,22 @@ export async function createErrorMessageState<C extends ReactiveContext>({ id, c
     error: Error,
 }) {
     try {
-        if (!globalCurrentState[id]) return
-        await ctx.api.deleteMessage(globalCurrentState[id]?.chat.id, globalCurrentState[id]?.message_id)
-        const data = await createMessageRender({
-            id,
-            method: createErrorMessageState.name,
-            jsx: await InternalError<C>({
-                error,
-                id,
-                retry: async () => {
-                    const state = globalStates.get(id);
-                    await state?.rerender();
-                },
-            }),
-            ctx,
-            other: {} as any,
-        })
-        const message = await ctx.api.sendMessage(globalCurrentState[id]?.chat.id, data.text, data.other)
+        if (!globalCurrentState[id] || !globalPreviousState[id]) return
+        const previous = globalPreviousState[id], current = globalCurrentState[id]
+        const target = { chat: current.message.chat.id, message: current.message.message_id }
+
+        const jsx = await InternalError<C>({ error, id, retry: async () => await globalStates.get(id)?.rerender() })
+        const render = await createMessageRender({ id, method: createErrorMessageState.name, jsx, ctx, other: {} as any }), hash = createHash(render)
+
+        if (hash !== previous.hash) return
+
+        await ctx.api.deleteMessage(target.chat, target.message)
+        const message = await ctx.api.sendMessage(target.chat, render.text, render.other)
         if (!message) throw new Error("Failed to send error message")
-        globalCurrentState[id] = message
+        globalCurrentState[id] = { message, render, hash }
+
         await flushEffects();
+
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
     } catch (e) {

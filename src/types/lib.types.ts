@@ -1,5 +1,5 @@
-import type { InputMedia } from "grammy/types";
-import type { OtherContexted } from "./grammy.types";
+import type { Message } from "grammy/types";
+import type { InputMediaArrayOmitAnimation, OtherContexted } from "./grammy.types";
 import type { IntrinsicElements, JSX } from "./jsx.types";
 import type { ReactiveContext } from "./plugin.types";
 
@@ -20,7 +20,7 @@ export type RenderedMessage<
     text: string;
     other: Other;
     view: RenderedViewType;
-    media: InputMedia[];
+    media: InputMediaArrayOmitAnimation;
 }>;
 
 /**
@@ -81,6 +81,13 @@ export type BotHandlerLifecycleInstance<
     C extends ReactiveContext
 > = ReturnType<BotHandlerLifecycle<C>>;
 
+
+export type CycleState = {
+    message: Message,
+    render: Awaited<RenderedMessage<any>>,
+    hash: string
+}
+
 // ! Message handlers
 
 /**
@@ -94,3 +101,5 @@ export type BotHandlerLifecycleInstance<
 export type BotMessageHandler<C extends ReactiveContext> = (
     event: { ctx: C, id: string, controller?: AbortController }
 ) => JSX.Element | Promise<JSX.Element>;
+
+// ! State managment

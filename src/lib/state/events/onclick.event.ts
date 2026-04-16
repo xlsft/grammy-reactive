@@ -1,7 +1,7 @@
 import { globalButtonCallbacks, globalStates } from "~/utils"
-import { createErrorMessageState } from "../lifecycle/error.state"
+
 import type { ReactiveContext } from "~/types/plugin.types"
-import type { NextFunction } from "~/types/grammy.types"
+import type { NextFunction } from "grammy"
 import { isAbortError } from "~/utils/isAbortError"
 
 /**

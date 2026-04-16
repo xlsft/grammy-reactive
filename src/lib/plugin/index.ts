@@ -1,10 +1,11 @@
-import type { MiddlewareFn, NextFunction } from "~/types/grammy.types";
-import type { PluginOptions, ReactiveContext, ReactiveContextFlavor, RequiredUnion } from "~/types/plugin.types";
+import type { MiddlewareFn, NextFunction } from "grammy";
+import type { PluginOptions, ReactiveContext, ReactiveContextFlavor } from "~/types/plugin.types";
 import { createOnClickEvent } from "../state/events/onclick.event";
 import { generateUniqueId } from "~/utils";
 import { createMessageRender } from "../render/message.render";
 import { JSXParseError } from "~/jsx/runtime/jsx.errors";
 import { Composer } from "grammy";
+import type { RequiredUnion } from "~/types/utils.types";
 
 /**
  * Creates the reactive middleware plugin.

@@ -1,33 +1,8 @@
-import type { Context, Message, OtherContexted, Bot } from "./grammy.types";
+import type { Context } from "grammy";
+import type { OtherContexted } from "./grammy.types";
 import type { JSX } from "./jsx.types";
-
-// ! Utility types
-
-/**
- * Excludes `undefined` from a union type.
- *
- * Commonly used to normalize optional generic parameters
- * into a required variant for internal render pipelines.
- *
- * @template T
- */
-export type RequiredUnion<T> = T extends undefined ? never : T;
-
-/**
- * Represents a value that can be provided either as a single item
- * or as an array of items of the same type.
- *
- * Useful for APIs that accept both:
- * - a single value
- * - multiple values
- *
- * @template T
- *
- * @example
- * type Input = MaybeArray<string>;
- * // string | string[]
- */
-export type MaybeArray<T> = T | T[]
+import type { Message } from "grammy/types";
+import type { MaybeArray } from "./utils.types";
 
 // ! Options
 

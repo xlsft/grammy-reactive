@@ -1,4 +1,4 @@
-import { InlineKeyboard, InputMediaBuilder, Keyboard } from "src/types/grammy.types";
+import { InlineKeyboard, InputMediaBuilder, Keyboard } from "grammy";
 import { createFragmentElementRender } from "./fragmemt.render";
 import { generateUniqueId, isEmoji, isUnixTime } from "src/utils";
 import { createTagRender as t } from "../tag.render";
@@ -7,8 +7,7 @@ import { JSXParseError } from "src/jsx/runtime/jsx.errors";
 import type { ExactInlineButtonProps, IntrinsicElement } from "src/types/jsx.types";
 import type { ReactiveContext } from "~/types/plugin.types";
 import type { RenderedMessageOptions } from "src/types/lib.types";
-import type { OtherContexted } from "src/types/grammy.types";
-import type { InputMedia } from "grammy/types";
+import type { OtherContexted, InputMediaOmitAnimation } from "src/types/grammy.types";
 
 /**
  * Renders a single intrinsic JSX node into its Telegram-compatible HTML string output.
@@ -38,13 +37,13 @@ import type { InputMedia } from "grammy/types";
  * @template {OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">} Other
  * @param {IntrinsicElement} element - The intrinsic node to render.
  * @param {RenderedMessageOptions<C, Other>} options - Active render context.
- * @returns {Promise<[string, InputMedia] | [string]>}
+ * @returns {Promise<[string, InputMediaOmitAnimation] | [string]>}
  * The rendered HTML fragment and optional extracted media.
  */
 export async function createIntrinsicElementRender<C extends ReactiveContext, Other extends OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">>(
     element: IntrinsicElement,
     options: RenderedMessageOptions<C, Other>
-): Promise<[string, InputMedia] | [string]> {
+): Promise<[string, InputMediaOmitAnimation] | [string]> {
     if (options.unallowed && options.unallowed.includes(element.entity.type)) {
         throw new JSXParseError(`Elements: ${options.unallowed.join(', ')} is not allowed in "${options.method}" method`)
     }
@@ -77,8 +76,8 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
         case 'code': return [
             t('code', (await createFragmentElementRender(element.children, options, true))[0])
         ]
-        case 'codeblock': return [ element.entity.lang ?
-            t( 'pre', t('code', (await createFragmentElementRender(element.children, options, true))[0], {
+        case 'codeblock': return [element.entity.lang ?
+            t('pre', t('code', (await createFragmentElementRender(element.children, options, true))[0], {
                 class: `language-${element.entity.lang}`
             })) : t('pre', (await createFragmentElementRender(element.children, options, true))[0])
         ]
@@ -109,10 +108,9 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
         case "media": {
             const builder = InputMediaBuilder
             const entity = element.entity
-            let media: InputMedia
-
+            let media: InputMediaOmitAnimation
             switch (entity.variant) {
-                case 'photo': media = builder.photo(entity.src, {
+                case undefined: media = builder.photo(entity.src, {
                     has_spoiler: entity.spoiler,
                     show_caption_above_media: entity.position === 'bottom',
                 }); break
@@ -137,12 +135,7 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
                     thumbnail: entity.thumbnail,
                     disable_content_type_detection: entity.disableContentTypeDetection
                 }); break
-                case 'animation': media = builder.animation(entity.src, {
-                    thumbnail: entity.thumbnail,
-                    has_spoiler: entity.spoiler,
-                    show_caption_above_media: entity.position === 'bottom',
-                }); break
-                default: throw new JSXParseError(`Unsupported media variant: ${entity.variant}`)
+                default: throw new JSXParseError(`Unsupported media variant: ${(entity as any).variant}`)
             }
 
             if (!media) throw new JSXParseError(`Media builder returned undefined for variant: ${entity.variant}`)
@@ -172,12 +165,12 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
             const text = getPlainText(element); if (!text) throw new JSXParseError("Inline button must have a text child")
 
             switch (entity.variant) {
+                case undefined: keyboard.text(text, id); break
                 case 'url': keyboard.url(text, entity.url); break
-                case 'callback': keyboard.text(text, id); break
                 case 'login': keyboard.login(text, entity.data); break
                 case 'switch_inline': keyboard.switchInline(text, entity.query); break
                 case 'switch_inline_chosen': keyboard.switchInlineChosen(text, entity.data); break
-                case 'copy': keyboard.copyText(text, entity.value.slice(0,255)); break
+                case 'copy': keyboard.copyText(text, entity.value.slice(0, 255)); break
                 case 'game': keyboard.game(text); break
                 case 'pay': keyboard.pay(text); break
                 default: keyboard.text(text, id); break
@@ -185,7 +178,7 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
 
             if (entity.color) keyboard.style(entity.color)
             if (entity.row) keyboard.row()
-            if ((entity.variant === 'callback' || !entity.variant) && (entity as ExactInlineButtonProps<'callback'>).onClick) {
+            if ((entity.variant === undefined || !entity.variant) && (entity as ExactInlineButtonProps<'callback'>).onClick) {
                 globalButtonCallbacks[id] = (entity as ExactInlineButtonProps<'callback'>).onClick!
             }
             return ['']

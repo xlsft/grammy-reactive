@@ -7,8 +7,8 @@ export default defineMessageHandler(async () => {
 
     return <>
         <p>Visible: {visible}</p>
-        {visible ? <Calculator/> : <Counter/>}
-        <button variant='callback' onClick={() => {
+        {visible ? <Calculator /> : <Counter />}
+        <button onClick={() => {
             setVisible(prev => !prev)
         }}>
             {visible ? "Show Counter" : "Show Calculator"}

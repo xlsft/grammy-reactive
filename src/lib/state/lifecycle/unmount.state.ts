@@ -1,4 +1,4 @@
-import { globalCurrentState } from "~/utils"
+import { globalCurrentState, globalPreviousState } from "~/utils"
 import type { ReactiveContext } from "~/types/plugin.types"
 import type { BotHandlerLifecycleInstance } from "~/types/lib.types";
 import { cleanupEffects } from "../hooks/effect.hooks";
@@ -15,13 +15,16 @@ export async function createUnmountMessageState<C extends ReactiveContext>({ id,
         await cleanupEffects()
         if (!globalCurrentState[id]) return
         try {
-           await ctx.deleteMessage(controller.signal as any)
+            await ctx.deleteMessage(controller.signal as any)
         } catch (e) {
-           if (!isMessageNotFound(e)) throw e;
+            if (!isMessageNotFound(e)) throw e;
         }
     } catch (e) {
         if (isAbortError(e)) return;
         console.error(e)
         await state.error(e as Error)
+    } finally {
+        delete globalCurrentState[id]
+        delete globalPreviousState[id]
     }
 }

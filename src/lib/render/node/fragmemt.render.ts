@@ -3,8 +3,7 @@ import type { IntrinsicElements, JSX } from "src/types/jsx.types";
 import { createIntrinsicElementRender } from "./intrinsic.render";
 import { createPlainElementRender } from "./plain.render";
 import type { MaybeArray, ReactiveContext } from "~/types/plugin.types";
-import type { OtherContexted } from "~/types/grammy.types";
-import type { InputMedia } from "grammy/types";
+import type { OtherContexted, InputMediaArrayOmitAnimation } from "~/types/grammy.types";
 
 /**
  * Recursively renders a JSX fragment tree into Telegram-compatible HTML string output.
@@ -37,9 +36,9 @@ export async function createFragmentElementRender<
     elements: MaybeArray<JSX.Element>,
     options: RenderedMessageOptions<C, Other>,
     noMedia?: boolean
-): Promise<[string, InputMedia[]] | [string]> {
+): Promise<[string, InputMediaArrayOmitAnimation] | [string]> {
     const array = Array.isArray(elements) ? elements : [elements];
-    const media: InputMedia[] = [];
+    const media = [];
 
     let out = ""; for (let i = 0; i < array.length; i++) {
         const current = array[i]; if (current == null) continue;
@@ -49,11 +48,9 @@ export async function createFragmentElementRender<
         const [text, attachment] = type === "fragment"
             ? await createFragmentElementRender(element.children, options)
             : await createIntrinsicElementRender(element, options);
-
+        const attachments = Array.isArray(attachment) ? attachment : [attachment]
         out += text
-        if (!noMedia && attachment) {
-            media.push(...Array.isArray(attachment) ? attachment : [attachment])
-        }
+        if (!noMedia && attachment) media.push(...attachments)
     }
 
     return [out, media];

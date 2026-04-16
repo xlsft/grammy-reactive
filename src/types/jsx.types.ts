@@ -2,30 +2,7 @@ import type { InlineKeyboardButton, InputFile, InputMediaAudio, InputMediaDocume
 import type { InlineKeyboard, Context } from "grammy";
 import type { ReactiveContextFlavor } from "~/types/plugin.types";
 import type { JSX } from "~/jsx/runtime/jsx.runtime";
-
-// ! Utility types
-//
-/**
- * Adds optional JSX children support to a props object.
- *
- * This is the base utility used for intrinsic elements and custom
- * component props that may receive renderable child nodes.
- *
- * @template P
- */
-export type WithChildren<P = {}> = P & {
-    children?: Node
-};
-
-/**
- * Extracts the props type from a {@link WithChildren}-compatible shape.
- *
- * If the target type does not use `WithChildren`, the original type
- * is returned unchanged.
- *
- * @template T
- */
-export type PropsOf<T> = T extends WithChildren<infer P> ? P : T;
+import type { AllKeys, PropsOf, StrictUnion, WithChildren } from "./utils.types";
 
 // ! Intrinsic elements
 
@@ -109,26 +86,17 @@ export type MediaPropsMap = {
         performer?: string,
         title?: string
     },
-    animation: {
-        spoiler?: boolean,
-        position?: "top" | "bottom",
-        thumbnail?: InputFile,
-        width?: number,
-        height?: number,
-        duration?: number,
-    },
     document: {
         thumbnail?: InputFile,
         disableContentTypeDetection?: boolean
     },
 }
 
-export type MediaProps = {
-    [K in keyof MediaPropsMap]: {
-        src: string | InputFile
-        variant?: K
-    } & MediaPropsMap[K]
-}[keyof MediaPropsMap]
+export type MediaProps = VariantProps<
+    MediaPropsMap,
+    'photo',
+    { src: string | InputFile }
+>
 
 // ! Button element
 
@@ -155,14 +123,15 @@ export type InlineButtonPropsMap = {
  *
  * Includes shared button styling options and variant-specific payloads.
  */
-export type InlineButtonProps = {
-    [K in keyof InlineButtonPropsMap]: {
-        variant?: K
+
+export type InlineButtonProps = VariantProps<
+    InlineButtonPropsMap,
+    'callback',
+    {
         color?: Parameters<typeof InlineKeyboard.prototype.style>[0]
         row?: boolean
-    } & InlineButtonPropsMap[K]
-}[keyof InlineButtonPropsMap]
-
+    }
+>
 /**
  * Resolves the exact payload type for a specific inline button variant.
  *
@@ -194,10 +163,10 @@ export type EntityPropsMap = {
  */
 export type EntityMap = {
     [K in keyof IntrinsicElements]:
-        EntityBase<K> &
-        (keyof PropsOf<IntrinsicElements[K]> extends never
-            ? {}
-            : PropsOf<IntrinsicElements[K]>)
+    EntityBase<K> &
+    (keyof PropsOf<IntrinsicElements[K]> extends never
+        ? {}
+        : PropsOf<IntrinsicElements[K]>)
 }
 
 /**
@@ -215,9 +184,9 @@ export type EntityBase<K extends string> = { type: K }
  */
 export type Entity = {
     [K in keyof IntrinsicElements]:
-        keyof PropsOf<IntrinsicElements[K]> extends never
-            ? EntityBase<K>
-            : EntityBase<K> & PropsOf<IntrinsicElements[K]>
+    keyof PropsOf<IntrinsicElements[K]> extends never
+    ? EntityBase<K>
+    : EntityBase<K> & PropsOf<IntrinsicElements[K]>
 }[keyof IntrinsicElements];
 
 // ! Tree nodes
@@ -263,6 +232,29 @@ export interface FragmentElement { type: "fragment"; children: JSX.Element[]; }
 export interface IntrinsicElement { type: "intrinsic"; entity: Entity; children: JSX.Element[]; }
 
 // ! Prop value types
+
+type VariantProps<
+    Map extends Record<string, any>,
+    Default extends keyof Map,
+    Base extends object = {}
+> =
+    | (
+        & { variant?: undefined }
+        & Base
+        & Map[Default]
+        & {
+            [K in Exclude<
+                AllKeys<Map[keyof Map]>,
+                keyof Map[Default]
+            >]?: never
+        }
+    )
+    | StrictUnion<{
+        [K in Exclude<keyof Map, Default>]:
+        & { variant: K }
+        & Base
+        & Map[K]
+    }[Exclude<keyof Map, Default>]>
 
 /**
  * Supported Telegram time formatting tokens.
