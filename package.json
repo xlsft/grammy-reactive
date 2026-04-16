@@ -34,14 +34,6 @@
         "./jsx": {
             "types": "./dist/jsx/index.d.ts",
             "import": "./dist/jsx/index.js"
-        },
-        "./jsx/jsx-runtime": {
-            "types": "./dist/jsx/jsx-runtime.d.ts",
-            "import": "./dist/jsx/jsx-runtime.js"
-        },
-        "./jsx/jsx-dev-runtime": {
-            "types": "./dist/jsx/jsx-dev-runtime.d.ts",
-            "import": "./dist/jsx/jsx-dev-runtime.js"
         }
     },
     "files": [

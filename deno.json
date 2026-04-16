@@ -3,10 +3,8 @@
     "version": "0.8.8",
     "license": "MIT",
     "exports": {
-        ".": "./src/lib/index.ts",
-        "./jsx": "./src/jsx/index.ts",
-        "./jsx/jsx-runtime": "./src/jsx/jsx-runtime.ts",
-        "./jsx/jsx-dev-runtime": "./src/jsx/jsx-dev-runtime.ts"
+        ".": "./src/lib",
+        "./jsx": "./src/jsx"
     },
     "publish": {
         "include": [
@@ -17,9 +15,7 @@
     },
     "imports": {
         "grammy": "npm:grammy@1.42.0",
-        "@xlsft/grammy-reactive/jsx-runtime": "./src/jsx/jsx-runtime.ts",
-        "@xlsft/grammy-reactive/jsx-dev-runtime": "./src/jsx/jsx-dev-runtime.ts",
-        "@xlsft/grammy-reactive/jsx": "./src/jsx/index.ts"
+        "@xlsft/grammy-reactive/jsx": "./src/jsx"
     },
     "nodeModulesDir": "auto"
 }
