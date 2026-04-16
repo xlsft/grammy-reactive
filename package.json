@@ -3,7 +3,7 @@
     "name": "@xlsft/grammy-reactive",
     "description": "React-like stateful library for grammY",
     "license": "MIT",
-    "version": "0.8.2",
+    "version": "0.8.7",
     "engines": {
         "node": ">=14.17.0"
     },
