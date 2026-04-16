@@ -46,22 +46,14 @@ export async function createMessageRender<C extends ReactiveContext, Other exten
     try {
         options.other ??= {} as Other; (options.other as any).parse_mode = "HTML"
         const tree = await options.jsx;
-        let photo: InputFile | undefined = undefined; const media: InputMediaPhoto[] = [];
 
-        const [text, attachments] = await createFragmentElementRender(tree, options);
+        const [text, media] = await createFragmentElementRender(tree, options);
 
-        if (attachments?.length) for (const item of attachments) {
-            media.push(InputMediaBuilder.photo(item.src, {
-                show_caption_above_media: item.position === 'top',
-                has_spoiler: item.spoiler
-            }))
-            photo = new InputFile(item.src)
-        }
         return {
             text: text.slice(0, media?.length ? 1024 : 4096),
             other: options.other,
             view: media?.length ? 'caption' : 'message',
-            media, photo
+            media: (media ?? []).slice(0, 10)
         };
     } catch (e) {
         const message = await createMessageRender({

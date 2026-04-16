@@ -4,6 +4,7 @@ import { createIntrinsicElementRender } from "./intrinsic.render";
 import { createPlainElementRender } from "./plain.render";
 import type { MaybeArray, ReactiveContext } from "~/types/plugin.types";
 import type { OtherContexted } from "~/types/grammy.types";
+import type { InputMedia } from "grammy/types";
 
 /**
  * Recursively renders a JSX fragment tree into Telegram-compatible HTML string output.
@@ -36,33 +37,22 @@ export async function createFragmentElementRender<
     elements: MaybeArray<JSX.Element>,
     options: RenderedMessageOptions<C, Other>,
     noMedia?: boolean
-    /** TODO:
-     * Uncomment this when caption rerender is fixed
-     * */
-//): Promise<[string, IntrinsicElements["img"][]] | [string]> {
-): Promise<[string, any[]] | [string]> {
+): Promise<[string, InputMedia[]] | [string]> {
     const array = Array.isArray(elements) ? elements : [elements];
-    const media: any[] = [];
-    /** TODO:
-     * Uncomment this when caption rerender is fixed
-     * */
-    // const media: IntrinsicElements["img"][] = [];
+    const media: InputMedia[] = [];
 
     let out = ""; for (let i = 0; i < array.length; i++) {
         const current = array[i]; if (current == null) continue;
         const element = await current, type = element.type;
 
         if (type === "plain") { out += createPlainElementRender(element); continue }
-        const rendered = type === "fragment"
+        const [text, attachment] = type === "fragment"
             ? await createFragmentElementRender(element.children, options)
             : await createIntrinsicElementRender(element, options);
 
-        out += rendered[0]
-        if (noMedia) continue
-        const _media = rendered[1];
-        if (_media) for (let j = 0; j < _media.length; j++) {
-            const item = _media[j];
-            if (item) media.push(item);
+        out += text
+        if (!noMedia && attachment) {
+            media.push(...Array.isArray(attachment) ? attachment : [attachment])
         }
     }
 

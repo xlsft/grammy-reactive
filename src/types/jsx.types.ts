@@ -1,4 +1,4 @@
-import type { InlineKeyboardButton } from "grammy/types";
+import type { InlineKeyboardButton, InputFile, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo } from "grammy/types";
 import type { InlineKeyboard, Context } from "grammy";
 import type { ReactiveContextFlavor } from "~/types/plugin.types";
 import type { JSX } from "~/jsx/runtime/jsx.runtime";
@@ -52,7 +52,7 @@ export const intrinsicElements = {
     h: {} as WithChildren,
     p: {} as WithChildren,
     br: {} as {},
-    img: {} as { src: string; position?: "top" | "bottom"; spoiler?: boolean },
+    media: {} as MediaProps,
     preview: {} as { src: string; position?: "top" | "bottom"; size?: "small" | "large" },
     button: {} as WithChildren<InlineButtonProps>,
     mention: {} as WithChildren<{ id: number }>,
@@ -85,7 +85,70 @@ export type IntrinsicElementOptions = {
     }
 }[keyof IntrinsicElements]
 
+// ! Media element
+
+export type MediaPropsMap = {
+    photo: {
+        spoiler?: boolean,
+        position?: "top" | "bottom",
+    },
+    video: {
+        spoiler?: boolean,
+        position?: "top" | "bottom",
+        cover?: string | InputFile,
+        thumbnail?: InputFile,
+        width?: number,
+        height?: number,
+        start?: number,
+        duration?: number,
+        stream?: boolean,
+    },
+    audio: {
+        thumbnail?: InputFile,
+        duration?: number,
+        performer?: string,
+        title?: string
+    },
+    animation: {
+        spoiler?: boolean,
+        position?: "top" | "bottom",
+        thumbnail?: InputFile,
+        width?: number,
+        height?: number,
+        duration?: number,
+    },
+    document: {
+        thumbnail?: InputFile,
+        disableContentTypeDetection?: boolean
+    },
+}
+
+export type MediaProps = {
+    [K in keyof MediaPropsMap]: {
+        src: string | InputFile
+        variant?: K
+    } & MediaPropsMap[K]
+}[keyof MediaPropsMap]
+
 // ! Button element
+
+/**
+ * Mapping of supported inline keyboard button variants to their payload shapes.
+ *
+ * Used internally for variant-safe button entity creation.
+ */
+export type InlineButtonPropsMap = {
+    url: { url: string }
+    callback: { event?: string, onClick?: (ctx: ReactiveContextFlavor<Context>) => Promise<void> | void }
+    app: { url: string }
+    login: { data: InlineKeyboardButton.LoginButton['login_url'] }
+    switch_inline: { query: string }
+    switch_inline_current: { query: string }
+    switch_inline_chosen: { data: InlineKeyboardButton.SwitchInlineChosenChatButton['switch_inline_query_chosen_chat'] }
+    copy: { value: string }
+    game: {}
+    pay: {}
+}
 
 /**
  * Union type describing all supported inline keyboard button variants.
@@ -107,24 +170,6 @@ export type InlineButtonProps = {
  */
 export type ExactInlineButtonProps<K extends keyof InlineButtonPropsMap> =
     InlineButtonPropsMap[K]
-
-/**
- * Mapping of supported inline keyboard button variants to their payload shapes.
- *
- * Used internally for variant-safe button entity creation.
- */
-export type InlineButtonPropsMap = {
-    url: { url: string }
-    callback: { event?: string, onClick?: (ctx: ReactiveContextFlavor<Context>) => Promise<void> | void }
-    app: { url: string }
-    login: { data: InlineKeyboardButton.LoginButton['login_url'] }
-    switch_inline: { query: string }
-    switch_inline_current: { query: string }
-    switch_inline_chosen: { data: InlineKeyboardButton.SwitchInlineChosenChatButton['switch_inline_query_chosen_chat'] }
-    copy: { value: string }
-    game: {}
-    pay: {}
-}
 
 // ! Entity system
 //

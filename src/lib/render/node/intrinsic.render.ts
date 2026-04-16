@@ -4,10 +4,11 @@ import { generateUniqueId, isEmoji, isUnixTime } from "src/utils";
 import { createTagRender as t } from "../tag.render";
 import { getEmoji, getPlainText, globalButtonCallbacks } from "src/utils";
 import { JSXParseError } from "src/jsx/runtime/jsx.errors";
-import type { ExactInlineButtonProps, IntrinsicElement, IntrinsicElements, PlainElement } from "src/types/jsx.types";
+import type { ExactInlineButtonProps, IntrinsicElement } from "src/types/jsx.types";
 import type { ReactiveContext } from "~/types/plugin.types";
 import type { RenderedMessageOptions } from "src/types/lib.types";
 import type { OtherContexted } from "src/types/grammy.types";
+import type { InputMedia } from "grammy/types";
 
 /**
  * Renders a single intrinsic JSX node into its Telegram-compatible HTML string output.
@@ -37,14 +38,13 @@ import type { OtherContexted } from "src/types/grammy.types";
  * @template {OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">} Other
  * @param {IntrinsicElement} element - The intrinsic node to render.
  * @param {RenderedMessageOptions<C, Other>} options - Active render context.
- * @returns {Promise<[string, IntrinsicElements["img"][]] | [string]>}
+ * @returns {Promise<[string, InputMedia] | [string]>}
  * The rendered HTML fragment and optional extracted media.
  */
 export async function createIntrinsicElementRender<C extends ReactiveContext, Other extends OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">>(
     element: IntrinsicElement,
     options: RenderedMessageOptions<C, Other>
-//): Promise<[string, (IntrinsicElements['img'][])] | [string]> {
-    // const media: IntrinsicElements['img'][] = [];
+): Promise<[string, InputMedia] | [string]> {
     if (options.unallowed && options.unallowed.includes(element.entity.type)) {
         throw new JSXParseError(`Elements: ${options.unallowed.join(', ')} is not allowed in "${options.method}" method`)
     }
@@ -106,13 +106,49 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
                 })
             ]
         }
-        /** TODO:
-         * When caption rerender is fixed, uncomment this
-         * */
-        // case "img": {
-        //     media.push(element.entity)
-        //     return ['', media]
-        // }
+        case "media": {
+            const builder = InputMediaBuilder
+            const entity = element.entity
+            let media: InputMedia
+
+            switch (entity.variant) {
+                case 'photo': media = builder.photo(entity.src, {
+                    has_spoiler: entity.spoiler,
+                    show_caption_above_media: entity.position === 'bottom',
+                }); break
+                case 'video': media = builder.video(entity.src, {
+                    has_spoiler: entity.spoiler,
+                    show_caption_above_media: entity.position === 'bottom',
+                    cover: entity.cover,
+                    thumbnail: entity.thumbnail,
+                    width: entity.width,
+                    height: entity.height,
+                    start_timestamp: entity.start,
+                    duration: entity.duration,
+                    supports_streaming: entity.stream
+                }); break
+                case 'audio': media = builder.audio(entity.src, {
+                    thumbnail: entity.thumbnail,
+                    duration: entity.duration,
+                    performer: entity.performer,
+                    title: entity.title
+                }); break
+                case 'document': media = builder.document(entity.src, {
+                    thumbnail: entity.thumbnail,
+                    disable_content_type_detection: entity.disableContentTypeDetection
+                }); break
+                case 'animation': media = builder.animation(entity.src, {
+                    thumbnail: entity.thumbnail,
+                    has_spoiler: entity.spoiler,
+                    show_caption_above_media: entity.position === 'bottom',
+                }); break
+                default: throw new JSXParseError(`Unsupported media variant: ${entity.variant}`)
+            }
+
+            if (!media) throw new JSXParseError(`Media builder returned undefined for variant: ${entity.variant}`)
+
+            return ['', media]
+        }
         case "preview": {
             if (options.other.link_preview_options) throw new JSXParseError("Preview in this state are already set")
             options.other.link_preview_options = {
@@ -154,10 +190,6 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
             }
             return ['']
         }
-        /** TODO:
-         * When caption rerender is fixed, uncomment this
-         * */
-        // default: return ['', media]
-        default: return ['', []]
+        default: return ['']
     }
 }

@@ -1,5 +1,6 @@
-import type { InputFile, InputMediaPhoto, OtherContexted } from "./grammy.types";
-import type { Element, IntrinsicElements, JSX } from "./jsx.types";
+import type { InputMedia } from "grammy/types";
+import type { OtherContexted } from "./grammy.types";
+import type { IntrinsicElements, JSX } from "./jsx.types";
 import type { ReactiveContext } from "./plugin.types";
 
 // ! Render pipeline
@@ -19,8 +20,7 @@ export type RenderedMessage<
     text: string;
     other: Other;
     view: RenderedViewType;
-    media: InputMediaPhoto[];
-    photo: InputFile | undefined;
+    media: InputMedia[];
 }>;
 
 /**
