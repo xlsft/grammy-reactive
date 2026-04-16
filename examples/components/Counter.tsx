@@ -7,11 +7,11 @@ export const Counter = async () => {
     return <>
         <p>{count}, double: {double}</p>
         {count > 0 ?
-            <button variant='callback' onClick={() => setCount(Math.max(count - 1))}>
+            <button onClick={() => setCount(Math.max(count - 1))}>
                 -
             </button>
         : null }
-        <button variant='callback' onClick={() => setCount(count + 1)} row>
+        <button onClick={() => setCount(count + 1)} row>
             +
         </button>
     </>

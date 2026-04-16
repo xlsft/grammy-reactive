@@ -32,11 +32,10 @@ export const Calculator = async () => {
         <p>{input}</p>
         {buttons.map(row => (
             row.map((v, i, arr) => {
-                if (v === '=') return <button variant='callback' event={`action:${v}`} color="success" onClick={calculate}>{v}</button>
-                if (v === 'C') return <button variant='callback' event={`action:${v}`} color="danger" onClick={clear}>{v}</button>
-                if (v === 'Error') return <button variant='callback' event={`action:${v}`} color="danger" onClick={error}>{v}</button>
+                if (v === '=') return <button event={`action:${v}`} color="success" onClick={calculate}>{v}</button>
+                if (v === 'C') return <button event={`action:${v}`} color="danger" onClick={clear}>{v}</button>
+                if (v === 'Error') return <button event={`action:${v}`} color="danger" onClick={error}>{v}</button>
                 return <button
-                    variant='callback'
                     color={['/', '*', '-', '+'].includes(v) ? 'primary' : undefined}
                     event={`action:${v}`}
                     onClick={() => append(v)}
