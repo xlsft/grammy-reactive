@@ -15,7 +15,7 @@
     "homepage": "https://cv.xlsft.ru/en/projects/grammy-reactive",
     "repository": {
         "type": "git",
-        "url": "https://github.com/xlsft/grammy-reactive.git"
+        "url": "git+https://github.com/xlsft/grammy-reactive.git"
     },
     "bugs": {
         "url": "https://github.com/xlsft/grammy-reactive/issues"
