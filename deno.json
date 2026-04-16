@@ -17,5 +17,6 @@
     },
     "imports": {
         "grammy": "npm:grammy@1.42.0"
-    }
+    },
+    "nodeModulesDir": "auto"
 }
