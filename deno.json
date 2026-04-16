@@ -3,8 +3,8 @@
     "version": "0.8.8",
     "license": "MIT",
     "exports": {
-        ".": "./src/lib",
-        "./jsx": "./src/jsx"
+        ".": "./src/lib/index.ts",
+        "./jsx": "./src/jsx/index.ts"
     },
     "publish": {
         "include": [
