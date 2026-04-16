@@ -10,7 +10,7 @@ import type {
     EntityFactoryMap,
     JSX,
 } from '../../types/jsx.types.ts'
-import { isIntrinsicElement } from 'src/utils';
+import { isIntrinsicElement } from '../../utils';
 import { InternalError } from '../../lib/render/components/Error.tsx';
 import type { WithChildren } from '../../types/utils.types.ts';
 
