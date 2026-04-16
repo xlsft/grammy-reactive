@@ -8,11 +8,11 @@ import type {
     PlainNode,
     EntityPropsMap,
     EntityFactoryMap,
-    WithChildren,
     JSX,
 } from '../../types/jsx.types.ts'
-import { generateUniqueId, isIntrinsicElement } from 'src/utils';
+import { isIntrinsicElement } from 'src/utils';
 import { InternalError } from '~/lib/render/components/Error.tsx';
+import type { WithChildren } from '~/types/utils.types.ts';
 
 /**
  * Resolves an arbitrary JSX node into a normalized element array.
