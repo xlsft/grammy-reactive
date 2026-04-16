@@ -1,0 +1,18 @@
+{
+    "name": "@xlsft/grammy-reactive",
+    "version": "0.8.8",
+    "license": "MIT",
+    "exports": {
+        ".": "./dist/lib/index.js",
+        "./jsx": "./dist/jsx/index.js",
+        "./jsx/jsx-runtime": "./dist/jsx/jsx-runtime.js",
+        "./jsx/jsx-dev-runtime": "./dist/jsx/jsx-dev-runtime.js"
+    },
+    "publish": {
+        "include": [
+            "dist",
+            "README.md",
+            "LICENSE"
+        ]
+    }
+}
