@@ -24,6 +24,9 @@
 ## Installation
 
 ```bash
+# Deno
+deno install npm:@xlsft/grammy-reactive
+
 # Bun
 bun add @xlsft/grammy-reactive
 
@@ -35,6 +38,9 @@ pnpm add @xlsft/grammy-reactive
 
 # yarn
 yarn add @xlsft/grammy-reactive
+
+# vlt
+vlt install @xlsft/grammy-reactive
 ```
 
 Add JSX runtime to `tsconfig.json`
@@ -42,6 +48,8 @@ Add JSX runtime to `tsconfig.json`
 ```json
 {
     "compilerOptions": {
+        "module": "ES2022",
+        "moduleResolution": "bundler",
         "jsxImportSource": "@xlsft/grammy-reactive/jsx",
         "jsx": "react-jsx",
     },
