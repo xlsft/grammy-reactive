@@ -1,4 +1,4 @@
-import type { IntrinsicElement, IntrinsicElements } from "~/types/jsx.types";
+import type { IntrinsicElement, IntrinsicElements } from "../types/jsx.types";
 
 /**
  * Finds the first direct emoji intrinsic child entity within an element.

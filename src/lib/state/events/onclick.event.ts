@@ -1,8 +1,8 @@
-import { globalButtonCallbacks, globalStates } from "~/utils"
+import { globalButtonCallbacks, globalStates } from "../../../utils"
 
-import type { ReactiveContext } from "~/types/plugin.types"
+import type { ReactiveContext } from "../../../types/plugin.types"
 import type { NextFunction } from "grammy"
-import { isAbortError } from "~/utils/isAbortError"
+import { isAbortError } from "../../../utils"
 
 /**
  * Dispatches registered reactive button callbacks for callback queries.

@@ -1,4 +1,4 @@
-import type { ReducerHook } from "~/types/hooks.types";
+import type { ReducerHook } from "../../../types/hooks.types";
 import { useState } from "./state.hooks";
 
 /**

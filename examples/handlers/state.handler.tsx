@@ -1,6 +1,6 @@
 import { Calculator } from "examples/components/Calculator"
 import { Counter } from "examples/components/Counter"
-import { defineMessageHandler, useState } from "~/lib"
+import { defineMessageHandler, useState } from "../../src/lib"
 
 export default defineMessageHandler(async () => {
     const [visible, setVisible] = useState(false)

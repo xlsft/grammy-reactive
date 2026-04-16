@@ -1,5 +1,5 @@
 import { Dashboard } from "examples/components/Dashboard"
-import { defineMessageHandler } from "~/lib"
+import { defineMessageHandler } from "../../src/lib"
 
 export default defineMessageHandler(async () => {
 

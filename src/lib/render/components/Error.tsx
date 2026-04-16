@@ -1,5 +1,4 @@
-import type { BotHandlerLifecycleInstance } from "~/types/lib.types"
-import type { ReactiveContext } from "~/types/plugin.types"
+import type { ReactiveContext } from "../../../types/plugin.types"
 
 /**
  * Renders the internal fallback error UI for failed lifecycle sessions.

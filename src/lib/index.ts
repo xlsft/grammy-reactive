@@ -1,9 +1,9 @@
-import { type BotMessageHandler } from "~/types/lib.types";
+import { type BotMessageHandler } from "../types/lib.types";
 import { reactive } from "./plugin";
-import { generateUniqueId } from "~/utils";
+import { generateUniqueId } from "../utils";
 import { createMessageState } from "./state/create.state";
-import type { ReactiveContext } from "~/types/plugin.types";
-import { isAbortError } from "~/utils/isAbortError";
+import type { ReactiveContext } from "../types/plugin.types";
+import { isAbortError } from "../utils";
 
 export function defineMessageHandler<C extends ReactiveContext>(
     handler: BotMessageHandler<C>

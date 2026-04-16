@@ -1,4 +1,4 @@
-import type { MemoHook } from "~/types/hooks.types";
+import type { MemoHook } from "../../../types/hooks.types";
 import { createHook } from "./create";
 
 /**

@@ -1,7 +1,7 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import type { HookRuntime } from "~/types/hooks.types";
-import type { BotHandlerLifecycleInstance, CycleState } from "~/types/lib.types";
-import type { ReactiveContext } from "~/types/plugin.types";
+import type { HookRuntime } from "../types/hooks.types";
+import type { BotHandlerLifecycleInstance, CycleState } from "../types/lib.types";
+import type { ReactiveContext } from "../types/plugin.types";
 
 /** Stores callback handlers for inline button interactions. */
 export const globalButtonCallbacks: Record<string, (ctx: ReactiveContext) => Promise<void> | void> = {}

@@ -2,9 +2,9 @@ import type { RenderedMessageOptions } from "src/types/lib.types";
 import type { JSX } from "src/types/jsx.types";
 import { createIntrinsicElementRender } from "./intrinsic.render";
 import { createPlainElementRender } from "./plain.render";
-import type { ReactiveContext } from "~/types/plugin.types";
-import type { OtherContexted, InputMediaArrayOmitAnimation } from "~/types/grammy.types";
-import type { MaybeArray } from "~/types/utils.types";
+import type { ReactiveContext } from "../../../types/plugin.types";
+import type { OtherContexted, InputMediaArrayOmitAnimation } from "../../../types/grammy.types";
+import type { MaybeArray } from "../../../types/utils.types";
 
 /**
  * Recursively renders a JSX fragment tree into Telegram-compatible HTML string output.

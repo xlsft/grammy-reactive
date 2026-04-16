@@ -5,9 +5,6 @@
         "module": "Preserve",
         "moduleDetection": "force",
         "baseUrl": ".",
-        "paths": {
-            "~/*": ["src/*"]
-        },
         "jsxImportSource": "src/jsx",
         "jsx": "react-jsx",
         "allowJs": true,

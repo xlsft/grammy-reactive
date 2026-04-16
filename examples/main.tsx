@@ -1,6 +1,6 @@
 
 import { Bot, Context } from "grammy";
-import { reactive, type ReactiveFlavor } from "~/lib";
+import { reactive, type ReactiveFlavor } from "../src/lib";
 import startHandler from "./handlers/start.handler";
 import calculatorHandler from "./handlers/calculator.handler";
 import timerHandler from "./handlers/timer.handler";

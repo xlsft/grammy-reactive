@@ -1,5 +1,5 @@
-import type { PlainElement } from "~/types/jsx.types";
-import { sanitizeHtmlString } from "~/utils";
+import type { PlainElement } from "../../../types/jsx.types";
+import { sanitizeHtmlString } from "../../../utils";
 
 /**
  * Renders a {@link PlainElement} into a sanitized HTML-safe string.

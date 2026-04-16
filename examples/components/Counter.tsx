@@ -1,4 +1,4 @@
-import { useMemo, useState } from "~/lib"
+import { useMemo, useState } from "../../src/lib"
 
 export const Counter = async () => {
     const [count, setCount] = useState(0)

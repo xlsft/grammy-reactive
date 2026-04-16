@@ -1,4 +1,4 @@
-import type { IntrinsicElement, PlainElement } from "~/types/jsx.types";
+import type { IntrinsicElement, PlainElement } from "../types/jsx.types";
 
 /**
  * Finds the first direct plain-text child value within an intrinsic element.

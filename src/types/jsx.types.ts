@@ -1,7 +1,7 @@
 import type { InlineKeyboardButton, InputFile, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo } from "grammy/types";
 import type { InlineKeyboard, Context } from "grammy";
-import type { ReactiveContextFlavor } from "~/types/plugin.types";
-import type { JSX } from "~/jsx/runtime/jsx.runtime";
+import type { ReactiveContextFlavor } from "../types/plugin.types";
+import type { JSX } from "../jsx/runtime/jsx.runtime";
 import type { AllKeys, PropsOf, StrictUnion, WithChildren } from "./utils.types";
 
 // ! Intrinsic elements

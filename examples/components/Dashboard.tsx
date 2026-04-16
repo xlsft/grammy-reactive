@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useReducer, useEffect, useContext } from "~/lib";
+import { useState, useMemo, useCallback, useReducer, useEffect, useContext } from "../../src/lib";
 
 const StatusBadge = ({ count }: { count: number }) => {
     const status = useMemo(() => {

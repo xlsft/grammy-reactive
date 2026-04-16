@@ -1,7 +1,7 @@
 import { createFragmentElementRender } from "./node/fragmemt.render";
-import type { ReactiveContext } from "~/types/plugin.types";
-import type { RenderedMessage, RenderedMessageOptions } from "~/types/lib.types";
-import type { OtherContexted } from "~/types/grammy.types";
+import type { ReactiveContext } from "../../types/plugin.types";
+import type { RenderedMessage, RenderedMessageOptions } from "../../types/lib.types";
+import type { OtherContexted } from "../../types/grammy.types";
 import { InternalError } from "./components/Error";
 
 /**

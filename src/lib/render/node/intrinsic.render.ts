@@ -5,7 +5,7 @@ import { createTagRender as t } from "../tag.render";
 import { getEmoji, getPlainText, globalButtonCallbacks } from "src/utils";
 import { JSXParseError } from "src/jsx/runtime/jsx.errors";
 import type { ExactInlineButtonProps, IntrinsicElement } from "src/types/jsx.types";
-import type { ReactiveContext } from "~/types/plugin.types";
+import type { ReactiveContext } from "../../../types/plugin.types";
 import type { RenderedMessageOptions } from "src/types/lib.types";
 import type { OtherContexted, InputMediaOmitAnimation } from "src/types/grammy.types";
 

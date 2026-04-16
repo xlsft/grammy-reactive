@@ -1,4 +1,4 @@
-import { withComponentScope } from '~/utils/withComponentScope.ts';
+import { withComponentScope } from '../../utils';
 import type {
     Component,
     IntrinsicElements,
@@ -11,8 +11,8 @@ import type {
     JSX,
 } from '../../types/jsx.types.ts'
 import { isIntrinsicElement } from 'src/utils';
-import { InternalError } from '~/lib/render/components/Error.tsx';
-import type { WithChildren } from '~/types/utils.types.ts';
+import { InternalError } from '../../lib/render/components/Error.tsx';
+import type { WithChildren } from '../../types/utils.types.ts';
 
 /**
  * Resolves an arbitrary JSX node into a normalized element array.

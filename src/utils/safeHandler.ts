@@ -1,6 +1,6 @@
-import type { ReactiveContext } from "~/types/plugin.types";
-import { InternalError } from "~/lib/render/components/Error";
-import type { BotMessageHandler } from "~/types/lib.types";
+import type { ReactiveContext } from "../types/plugin.types";
+import { InternalError } from "../lib/render/components/Error";
+import type { BotMessageHandler } from "../types/lib.types";
 
 /**
  * Executes a message handler with built-in error fallback rendering.

@@ -1,6 +1,6 @@
-import type { EffectCleanup, EffectState, HookRuntime } from "~/types/hooks.types";
+import type { EffectCleanup, EffectState } from "../../../types/hooks.types";
 import { createHook } from "./create";
-import { globalHookRuntimeAsyncStorage } from "~/utils";
+import { globalHookRuntimeAsyncStorage } from "../../../utils";
 
 /**
  * Schedules a side effect to run after the current render cycle.

@@ -1,9 +1,8 @@
-import { InternalError } from "~/lib/render/components/Error"
-import { createMessageRender } from "~/lib/render/message.render"
-import type { ReactiveContext } from "~/types/plugin.types"
-import { globalCurrentState, globalPreviousState, globalStates } from "~/utils"
+import { InternalError } from "../../../lib/render/components/Error"
+import { createMessageRender } from "../../../lib/render/message.render"
+import type { ReactiveContext } from "../../../types/plugin.types"
+import { globalCurrentState, globalPreviousState, globalStates, createHash } from "../../../utils"
 import { flushEffects } from "../hooks/effect.hooks"
-import { createHash } from "~/utils/createHash"
 
 /**
  * Replaces the current rendered message with an internal error fallback.

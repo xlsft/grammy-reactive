@@ -2,7 +2,7 @@ import type {
     Element as _Element,
     IntrinsicElements as _IntrinsicElements,
     Component as _Component,
-} from '~/types/jsx.types.ts'
+} from '../../types/jsx.types.ts'
 import { createRoot, createFragment } from './jsx.ts'
 
 export {

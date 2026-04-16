@@ -156,7 +156,7 @@ import {
     useEffect,
     useState,
     useContext,
-} from "~/lib";
+} from "@xlsft/grammy-reactive";
 
 export default defineMessageHandler(async () => {
     const [seconds, setSeconds] = useState(0);

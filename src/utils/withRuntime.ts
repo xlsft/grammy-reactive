@@ -1,5 +1,5 @@
-import type { HookRuntime } from "~/types/hooks.types";
-import type { ReactiveContext } from "~/types/plugin.types";
+import type { HookRuntime } from "../types/hooks.types";
+import type { ReactiveContext } from "../types/plugin.types";
 import { globalHookRuntimeAsyncStorage } from "./global";
 
 /**

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "~/lib";
+import { useContext, useEffect, useState } from "../../src/lib";
 
 export const Timer = () => {
     const [seconds, setSeconds] = useState(0);

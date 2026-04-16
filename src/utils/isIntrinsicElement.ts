@@ -1,4 +1,4 @@
-import { intrinsicElements, type IntrinsicElements } from "~/types/jsx.types";
+import { intrinsicElements, type IntrinsicElements } from "../types/jsx.types";
 
 /**
  * Checks whether a string is a valid intrinsic JSX element name.
