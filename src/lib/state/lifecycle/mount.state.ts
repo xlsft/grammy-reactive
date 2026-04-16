@@ -1,7 +1,7 @@
-import type { BotHandlerLifecycleInstance, BotMessageHandler } from "src/types/lib.types"
-import { createMessageRender } from "src/lib/render/message.render"
-import { globalCurrentState, globalPreviousState } from "src/utils"
-import type { ReactiveContext } from "src/types/plugin.types"
+import type { BotHandlerLifecycleInstance, BotMessageHandler } from "../../../../src/types/lib.types"
+import { createMessageRender } from "../../../../src/lib/render/message.render"
+import { globalCurrentState, globalPreviousState } from "../../../../src/utils"
+import type { ReactiveContext } from "../../../../src/types/plugin.types"
 import { flushEffects } from "../hooks/effect.hooks"
 import { isAbortError, safeHandler, createHash } from "../../../utils"
 
