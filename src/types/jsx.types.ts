@@ -14,26 +14,11 @@ import type { AllKeys, PropsOf, StrictUnion, WithChildren } from "./utils.types"
  *
  * Use {@link IntrinsicElements} for the inferred type-safe version.
  */
-export const intrinsicElements = {
-    b: {} as WithChildren,
-    i: {} as WithChildren,
-    u: {} as WithChildren,
-    s: {} as WithChildren,
-    spoiler: {} as WithChildren,
-    a: {} as WithChildren<{ href: string }>,
-    emoji: {} as WithChildren<{ id: string }>,
-    time: {} as WithChildren<{ unix: number; format?: TimeFormat }>,
-    code: {} as WithChildren,
-    codeblock: {} as WithChildren<{ lang?: CodeBlockLanguages }>,
-    blockquote: {} as WithChildren<{ expandable?: boolean }>,
-    h: {} as WithChildren,
-    p: {} as WithChildren,
-    br: {} as {},
-    media: {} as MediaProps,
-    preview: {} as { src: string; position?: "top" | "bottom"; size?: "small" | "large" },
-    button: {} as WithChildren<InlineButtonProps>,
-    mention: {} as WithChildren<{ id: number }>,
-} satisfies Record<string, unknown>;
+export const intrinsicElements = new Set<keyof IntrinsicElements>([
+    'b', 'i', 'u', 's', 'a', 'h', 'p', 'br',
+    'spoiler', 'emoji', 'time', 'code', 'codeblock', 'blockquote',
+    'media', 'preview'
+]);
 
 /**
  * Type-safe map of all supported intrinsic JSX elements and their props.
@@ -41,7 +26,30 @@ export const intrinsicElements = {
  * Each key represents an intrinsic JSX tag name and each value
  * defines its allowed props shape.
  */
-export type IntrinsicElements = typeof intrinsicElements;
+ export type IntrinsicElements = {
+     b: WithChildren;
+     i: WithChildren;
+     u: WithChildren;
+     s: WithChildren;
+     spoiler: WithChildren;
+     a: WithChildren<{ href: string }>;
+     emoji: WithChildren<{ id: string }>;
+     time: WithChildren<{ unix: number; format?: TimeFormat }>;
+     code: WithChildren;
+     codeblock: WithChildren<{ lang?: CodeBlockLanguages }>;
+     blockquote: WithChildren<{ expandable?: boolean }>;
+     h: WithChildren;
+     p: WithChildren;
+     br: {};
+     media: MediaProps;
+     preview: {
+         src: string;
+         position?: "top" | "bottom";
+         size?: "small" | "large";
+     };
+     button: WithChildren<InlineButtonProps>;
+     mention: WithChildren<{ id: number }>;
+ };
 
 /**
  * Resolves the exact props type for a specific intrinsic element tag.

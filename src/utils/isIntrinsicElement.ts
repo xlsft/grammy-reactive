@@ -20,6 +20,8 @@ import { intrinsicElements, type IntrinsicElements } from "../types/jsx.types";
  *     createIntrinsicElement({ tag, props });
  * }
  */
-export function isIntrinsicElement(name: string): name is keyof IntrinsicElements {
-    return name in intrinsicElements;
+
+
+export function isIntrinsicElement(name: keyof IntrinsicElements): name is keyof IntrinsicElements {
+    return intrinsicElements.has(name);
 }

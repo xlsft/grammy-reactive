@@ -152,7 +152,7 @@ export async function createFragment(props?: { children?: Node }): Promise<Fragm
  * @returns {JSX.Element | Promise<JSX.Element>}
  * The root JSX element tree.
  */
-export function createRoot(type: any, props: any, key?: any) {
+export function createRoot(type: any, props: any, key?: any): JSX.Element | Promise<JSX.Element> {
     props ??= {};
     const children = props.children;
 

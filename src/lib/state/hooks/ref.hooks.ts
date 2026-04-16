@@ -22,6 +22,6 @@ import { useMemo } from "./memo.hooks";
  * timer.current = setTimeout(...)
  * ```
  */
-export function useRef<T>(initial: T) {
+export function useRef<T>(initial: T): { current: T } {
     return useMemo(() => ({ current: initial }), []);
 }
