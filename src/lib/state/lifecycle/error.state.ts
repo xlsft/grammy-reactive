@@ -4,6 +4,25 @@ import type { ReactiveContext } from "~/types/plugin.types"
 import { globalCurrentState, globalPreviousState, globalStates } from "~/utils"
 import { flushEffects } from "../hooks/effect.hooks"
 
+/**
+ * Replaces the current rendered message with an internal error fallback.
+ *
+ * This lifecycle recovery handler removes the active message,
+ * renders the built-in error component, and sends it as a new
+ * message while preserving reactive state tracking.
+ *
+ * The fallback view also includes a retry action that triggers
+ * a rerender of the failed handler instance.
+ *
+ * @template C
+ * @param {{
+ *     id: string,
+ *     ctx: C,
+ *     error: Error
+ * }} options
+ * Error recovery lifecycle options.
+ * @returns {Promise<void>}
+ */
 export async function createErrorMessageState<C extends ReactiveContext>({ id, ctx, error }: {
     id: string,
     ctx: C,

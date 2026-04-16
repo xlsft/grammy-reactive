@@ -12,6 +12,13 @@ export {
     createRoot as jsxs,
 }
 
+/**
+ * Global JSX runtime type declarations.
+ *
+ * This namespace defines the TypeScript JSX contract used by the
+ * custom reactive render runtime, including supported element types,
+ * intrinsic tags, props inference, and children handling.
+ */
 export namespace JSX {
     export type Element = _Element | Promise<_Element>
     export type ElementType = keyof _IntrinsicElements | _Component

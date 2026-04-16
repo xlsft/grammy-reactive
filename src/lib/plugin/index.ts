@@ -6,6 +6,36 @@ import { createMessageRender } from "../render/message.render";
 import { JSXParseError } from "~/jsx/runtime/jsx.errors";
 import { Composer } from "grammy";
 
+/**
+ * Creates the reactive middleware plugin.
+ *
+ * This middleware extends the Grammy context with support for:
+ * - JSX-based message rendering
+ * - reactive component lifecycle handling
+ * - inline button callback dispatch
+ * - custom `ctx.reply()` JSX support
+ *
+ * It also installs internal callback query listeners required
+ * for interactive button components and reactive rerender flows.
+ *
+ * @template C
+ * @param {PluginOptions<C>} [options]
+ * Optional plugin configuration.
+ * @returns {MiddlewareFn<ReactiveContextFlavor<C>>}
+ * A Grammy middleware that enables the reactive JSX runtime.
+ *
+ * @example
+ * ```ts
+ * bot.use(reactive())
+ * ```
+ *
+ * @example
+ * ```tsx
+ * await ctx.reply(
+ *   <b>Hello from JSX</b>
+ * )
+ * ```
+ */
 export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>): MiddlewareFn<ReactiveContextFlavor<C>> {
 
     const composer = new Composer<ReactiveContextFlavor<C>>()

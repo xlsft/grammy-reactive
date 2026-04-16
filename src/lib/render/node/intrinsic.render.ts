@@ -43,10 +43,6 @@ import type { OtherContexted } from "src/types/grammy.types";
 export async function createIntrinsicElementRender<C extends ReactiveContext, Other extends OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">>(
     element: IntrinsicElement,
     options: RenderedMessageOptions<C, Other>
-): Promise<[string, (any[])] | [string]> {
-    /** TODO:
-     * When caption rerender is fixed, uncomment this
-     * */
 //): Promise<[string, (IntrinsicElements['img'][])] | [string]> {
     // const media: IntrinsicElements['img'][] = [];
     if (options.unallowed && options.unallowed.includes(element.entity.type)) {
@@ -134,7 +130,7 @@ export async function createIntrinsicElementRender<C extends ReactiveContext, Ot
             if (!options.other.reply_markup) options.other.reply_markup = new InlineKeyboard()
 
             const entity = element.entity
-            const id = `::${options.id}::${(entity as ExactInlineButtonProps<'callback'>).event || element.id || generateUniqueId()}`
+            const id = `::${options.id}::${(entity as ExactInlineButtonProps<'callback'>).event || generateUniqueId()}`
             const keyboard = options.other.reply_markup as InlineKeyboard
             const emoji = getEmoji(element); if (emoji) keyboard.icon(emoji.id)
             const text = getPlainText(element); if (!text) throw new JSXParseError("Inline button must have a text child")

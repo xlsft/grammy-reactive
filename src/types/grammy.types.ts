@@ -42,7 +42,6 @@ import type { Methods } from "node_modules/grammy/out/core/client.d.ts";
  *     "text" | "chat_id" | "parse_mode"
  * >;
  */
-
 type OtherContexted<M extends Methods<RawApi>, X extends string = never> = Other<RawApi, M, X>;
 
 export type {

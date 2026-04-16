@@ -52,10 +52,7 @@ export const intrinsicElements = {
     h: {} as WithChildren,
     p: {} as WithChildren,
     br: {} as {},
-    /** TODO:
-     * When caption rerender is fixed, uncomment this
-     * */
-    // img: {} as { src: string; position?: "top" | "bottom"; spoiler?: boolean },
+    img: {} as { src: string; position?: "top" | "bottom"; spoiler?: boolean },
     preview: {} as { src: string; position?: "top" | "bottom"; size?: "small" | "large" },
     button: {} as WithChildren<InlineButtonProps>,
     mention: {} as WithChildren<{ id: number }>,
@@ -218,7 +215,7 @@ export interface FragmentElement { type: "fragment"; children: JSX.Element[]; }
 /**
  * Intrinsic JSX render node with serialized entity metadata.
  */
-export interface IntrinsicElement { id: string, type: "intrinsic"; entity: Entity; children: JSX.Element[]; }
+export interface IntrinsicElement { type: "intrinsic"; entity: Entity; children: JSX.Element[]; }
 
 // ! Prop value types
 

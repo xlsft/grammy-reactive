@@ -3,7 +3,7 @@
     "name": "@xlsft/grammy-reactive",
     "description": "React-like stateful library for grammY",
     "license": "MIT",
-    "version": "0.7.34",
+    "version": "0.7.35",
     "engines": {
         "node": ">=14.17.0"
     },
@@ -42,7 +42,8 @@
     ],
     "scripts": {
         "dev": "bun run --watch examples/main.tsx",
-        "build": "tsc -p tsconfig.build.json"
+        "build": "tsc -p tsconfig.build.json",
+        "release": "npm version patch && npm publish --access public"
     },
     "devDependencies": {
         "@types/node": "^25.6.0",
