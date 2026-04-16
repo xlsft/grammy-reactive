@@ -4,7 +4,7 @@
     "description": "React-like stateful declarative library with hooks, effects and JSX support for grammY",
     "packageManager": "bun@1.3.2",
     "license": "MIT",
-    "version": "0.8.9",
+    "version": "0.8.10",
     "engines": {
         "node": ">=14.17.0"
     },
