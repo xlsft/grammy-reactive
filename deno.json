@@ -16,7 +16,10 @@
         ]
     },
     "imports": {
-        "grammy": "npm:grammy@1.42.0"
+        "grammy": "npm:grammy@1.42.0",
+        "@xlsft/grammy-reactive/jsx-runtime": "./src/jsx/jsx-runtime.ts",
+        "@xlsft/grammy-reactive/jsx-dev-runtime": "./src/jsx/jsx-dev-runtime.ts",
+        "@xlsft/grammy-reactive/jsx": "./src/jsx/index.ts"
     },
     "nodeModulesDir": "auto"
 }

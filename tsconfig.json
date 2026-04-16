@@ -5,7 +5,7 @@
         "module": "Preserve",
         "moduleDetection": "force",
         "baseUrl": ".",
-        "jsxImportSource": "src/jsx",
+        "jsxImportSource": "@xlsft/grammy-reactive/jsx",
         "jsx": "react-jsx",
         "allowJs": true,
 
