@@ -11,7 +11,7 @@ import type {
     JSX,
 } from '../../types/jsx.types.ts'
 import { isIntrinsicElement } from '../../utils';
-import { InternalError } from '../../lib/render/components/Error.tsx';
+import { InternalError } from '../../lib/render/components/Error';
 import type { WithChildren } from '../../types/utils.types.ts';
 
 /**
