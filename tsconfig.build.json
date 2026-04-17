@@ -3,6 +3,7 @@
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./dist",
+        "jsxImportSource": "../../../jsx",
         "emitDeclarationOnly": false,
         "declaration": true,
         "allowImportingTsExtensions": false
