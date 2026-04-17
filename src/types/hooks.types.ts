@@ -20,6 +20,7 @@ export type HookRuntime = {
     renderVersion: number
     isRendering: boolean
     pendingRender: boolean
+    asyncCache: Map<string, AsyncCacheEntry<any>>
 };
 
 /**
@@ -62,3 +63,17 @@ export type EffectState = {
  * Cleanup handlers may be synchronous or asynchronous.
  */
 export type EffectCleanup = void | (() => void | Promise<void>);
+
+
+export type AsyncData<T> = {
+    value: T | null;
+    pending: boolean;
+    error: unknown;
+    refresh: () => Promise<void>;
+};
+
+export type AsyncCacheEntry<T> = {
+    value: T | null;
+    error: unknown;
+    promise: Promise<T> | null;
+};

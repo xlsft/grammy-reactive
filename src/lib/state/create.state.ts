@@ -99,6 +99,7 @@ export function createMessageState<C extends ReactiveContext>({ id, ctx, handler
         renderVersion: 0,
         isRendering: false,
         pendingRender: false,
+        asyncCache: new Map()
     };
     return state
 }

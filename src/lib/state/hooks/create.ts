@@ -16,7 +16,7 @@ import { globalHookRuntimeAsyncStorage } from "../../../utils";
  * }}
  * The active hook execution metadata.
  */
-export const createHook = () => {
+export function createHook() {
     const runtime = globalHookRuntimeAsyncStorage.getStore()!;
     const key = runtime.componentPath.join(".");
 
