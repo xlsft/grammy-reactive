@@ -8,7 +8,6 @@ type Data = {
 }[]
 
 export default defineMessageHandler(async () => {
-
     const pageSize = 10
 
     const data = useAsync<Data>(() => fetch('https://jsonplaceholder.typicode.com/todos').then(res => res.json()))
@@ -20,16 +19,12 @@ export default defineMessageHandler(async () => {
     }, [data.value, page])
     return <>
         {data.pending || !slice ? 'Loading...' : <>
-            <h>Page: {page} / {Math.ceil(data.value?.length ?? 0 / pageSize)}</h><br/>
-            {slice.map(item => <>
-                <b>User ID:</b> {item.userId}
-                <b>ID:</b> {item.id}
-                <b>Title:</b> {item.title}
-                <b>Completed:</b> {item.completed.toString()}<br /><br />
-                {!first ? <button onClick={() => setPage(page - 1)}>{'<'}</button> : null}
-                {!last ? <button onClick={() => setPage(page + 1)}>{'>'}</button> : null}
-            </>)}
-            <h>Page: {page} / {Math.ceil(data.value?.length ?? 0 / pageSize)}</h><br/>
+            {slice.map(item => <b>
+                {JSON.stringify(item)}<br/><br/>
+            </b>)}
+            <h>Page: {page} / {Math.ceil(data.value?.length ?? 0 / pageSize)}</h><br />
+            {!first ? <button onClick={() => setPage(page - 1)}>{'<'}</button> : null}
+            {!last ? <button onClick={() => setPage(page + 1)}>{'>'}</button> : null}
         </>}
     </>
 })

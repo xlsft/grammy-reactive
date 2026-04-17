@@ -43,7 +43,7 @@ export async function createMessageRender<C extends ReactiveContext, Other exten
     options: RenderedMessageOptions<C, Other>
 ): RenderedMessage<Other> {
     try {
-        options.other ??= {} as Other; (options.other as any).parse_mode = "HTML"
+        options.other ??= {} as Other; (options.other as any).parse_mode = "HTML"; options.other.reply_markup = undefined
         const tree = await options.jsx;
 
         const [text, media] = await createFragmentElementRender(tree, options);

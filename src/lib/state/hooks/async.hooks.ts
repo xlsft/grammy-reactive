@@ -22,25 +22,30 @@ export function useAsync<T>(keyOrHandler: string | (() => Promise<T>), handlerOr
 
     const [state, setState] = useState({
         value: entry.value,
-        pending: !entry.value && !entry.error,
         error: entry.error,
     });
 
     const execute = async () => {
         if (entry.promise) { await entry.promise; return }
         const promise = handler(); entry.promise = promise;
-        setState(prev => ({ ...prev, pending: true }));
+        setState(prev => ({ ...prev, }));
         try {
-            const value = await promise; entry.value = value; entry.error = null; entry.promise = null;
-            setState({ value, error: null, pending: false });
+            const value = await promise; entry.value = value; entry.error = null; entry.promise = null
+            setState({ value, error: null })
         } catch (error) {
-            entry.error = error; entry.promise = null;
-            setState({ value: null, error, pending: false });
+            entry.error = error; entry.promise = null
+            setState({ value: null, error });
         }
-    }; useEffect(execute, deps)
+    };
+
+    useEffect(() => {
+        if (!entry.promise && entry.value === null && entry.error === null) execute()
+    }, deps);
 
     return {
-        ...state,
+        value: state.value,
+        error: state.error,
+        pending: entry.promise !== null,
         refresh: async () => {
             entry.promise = null;
             await execute();
