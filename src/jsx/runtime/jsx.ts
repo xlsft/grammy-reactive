@@ -1,4 +1,4 @@
-import { withComponentScope } from '../../utils';
+import { withComponentScope } from "../../utils";
 import type {
     Component,
     IntrinsicElements,
@@ -9,10 +9,10 @@ import type {
     EntityPropsMap,
     EntityFactoryMap,
     JSX,
-} from '../../types/jsx.types.ts'
-import { isIntrinsicElement } from '../../utils';
-import { InternalError } from '../../lib/render/components/Error';
-import type { WithChildren } from '../../types/utils.types.ts';
+} from "../../types/jsx.types.ts"
+import { isIntrinsicElement } from "../../utils";
+import { InternalError } from "../../lib/render/components/Error";
+import type { WithChildren } from "../../types/utils.types.ts";
 
 /**
  * Resolves an arbitrary JSX node into a normalized element array.

@@ -1,4 +1,4 @@
-import type { AsyncData } from "src/types/hooks.types";
+import type { AsyncData } from "../../../types/hooks.types";
 import { createHook } from "./create";
 import { useState } from "./state.hooks";
 import { useEffect } from "./effect.hooks";

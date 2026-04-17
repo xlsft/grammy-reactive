@@ -31,4 +31,4 @@ export type {
 } from "../types/plugin.types"
 export type {
     BotMessageHandler as MessageHandler
-} from '../types/lib.types'
+} from "../types/lib.types"
