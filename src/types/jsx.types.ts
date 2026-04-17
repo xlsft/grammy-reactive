@@ -17,7 +17,7 @@ import type { AllKeys, PropsOf, StrictUnion, WithChildren } from "./utils.types"
 export const intrinsicElements = new Set<keyof IntrinsicElements>([
     'b', 'i', 'u', 's', 'a', 'h', 'p', 'br',
     'spoiler', 'emoji', 'time', 'code', 'codeblock', 'blockquote',
-    'media', 'preview', 'mention'
+    'media', 'preview', 'mention', 'button'
 ]);
 
 /**
@@ -26,30 +26,30 @@ export const intrinsicElements = new Set<keyof IntrinsicElements>([
  * Each key represents an intrinsic JSX tag name and each value
  * defines its allowed props shape.
  */
- export type IntrinsicElements = {
-     b: WithChildren;
-     i: WithChildren;
-     u: WithChildren;
-     s: WithChildren;
-     spoiler: WithChildren;
-     a: WithChildren<{ href: string }>;
-     emoji: WithChildren<{ id: string }>;
-     time: WithChildren<{ unix: number; format?: TimeFormat }>;
-     code: WithChildren;
-     codeblock: WithChildren<{ lang?: CodeBlockLanguages }>;
-     blockquote: WithChildren<{ expandable?: boolean }>;
-     h: WithChildren;
-     p: WithChildren;
-     br: {};
-     media: MediaProps;
-     preview: {
-         src: string;
-         position?: "top" | "bottom";
-         size?: "small" | "large";
-     };
-     button: WithChildren<InlineButtonProps>;
-     mention: WithChildren<{ id: number }>;
- };
+export type IntrinsicElements = {
+    b: WithChildren;
+    i: WithChildren;
+    u: WithChildren;
+    s: WithChildren;
+    spoiler: WithChildren;
+    a: WithChildren<{ href: string }>;
+    emoji: WithChildren<{ id: string }>;
+    time: WithChildren<{ unix: number; format?: TimeFormat }>;
+    code: WithChildren;
+    codeblock: WithChildren<{ lang?: CodeBlockLanguages }>;
+    blockquote: WithChildren<{ expandable?: boolean }>;
+    h: WithChildren;
+    p: WithChildren;
+    br: {};
+    media: MediaProps;
+    preview: {
+        src: string;
+        position?: "top" | "bottom";
+        size?: "small" | "large";
+    };
+    button: WithChildren<InlineButtonProps>;
+    mention: WithChildren<{ id: number }>;
+};
 
 /**
  * Resolves the exact props type for a specific intrinsic element tag.
