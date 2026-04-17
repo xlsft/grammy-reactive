@@ -19,7 +19,7 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
         const runtime = globalHookRuntimeAsyncStorage.getStore()!, version = ++runtime.renderVersion;
 
         const jsx = safeHandler({ handler, ctx, id, controller }); if (version !== runtime.renderVersion) return
-        const render = await createMessageRender({ id, method: createRerenderMessageState.name, jsx, ctx, other: {} as any }), hash = createHash(render)
+        const render = await createMessageRender({ id, method: createRerenderMessageState.name, jsx, ctx, other: previous.render.other }), hash = createHash(render)
 
         if (hash === previous.hash) return
 
