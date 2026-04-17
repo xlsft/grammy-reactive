@@ -52,8 +52,7 @@
     "scripts": {
         "dev": "bun run --watch examples/main.tsx",
         "build": "tsc -p tsconfig.build.json",
-        "prepublishOnly": "npm run build",
-        "release": "npm version patch && npm publish --access public"
+        "release": "npm run build && npm version patch && npm publish --access public"
     },
     "devDependencies": {
         "@types/node": "^25.6.0",
