@@ -17,7 +17,7 @@ import type { AllKeys, PropsOf, StrictUnion, WithChildren } from "./utils.types"
 export const intrinsicElements = new Set<keyof IntrinsicElements>([
     'b', 'i', 'u', 's', 'a', 'h', 'p', 'br',
     'spoiler', 'emoji', 'time', 'code', 'codeblock', 'blockquote',
-    'media', 'preview'
+    'media', 'preview', 'mention'
 ]);
 
 /**
