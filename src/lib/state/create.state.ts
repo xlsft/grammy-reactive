@@ -2,10 +2,9 @@ import type { BotHandlerLifecycleInstance, BotMessageHandler } from "../../types
 import { createRerenderMessageState } from "./lifecycle/rerender.state";
 import { createUnmountMessageState } from "./lifecycle/unmount.state";
 import type { ReactiveContext } from "../../types/plugin.types";
-import { globalAbortControllers, globalStates, withRuntime } from "../../utils";
+import { globalAbortControllers, globalStates, withRuntime, createHookRuntime } from "../../utils";
 import { createMountMessageState } from "./lifecycle/mount.state";
 import { createErrorMessageState } from "./lifecycle/error.state";
-import { createHookRuntime } from "src/utils/createHookRuntime";
 
 export function createMessageState<C extends ReactiveContext>({ id, ctx, handler }: {
     id: string,
