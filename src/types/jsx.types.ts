@@ -1,4 +1,5 @@
-import type { InlineKeyboardButton, InputFile, InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo } from "grammy/types";
+import type { InputFile } from "grammy/types";
+import type { InlineKeyboardButton } from "grammy/types";
 import type { InlineKeyboard, Context } from "grammy";
 import type { ReactiveContextFlavor } from "../types/plugin.types";
 import type { JSX } from "../jsx/runtime/jsx.runtime";

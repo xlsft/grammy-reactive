@@ -34,7 +34,7 @@ export async function createErrorMessageState<C extends ReactiveContext>({ id, c
         const previous = globalPreviousState[id], current = globalCurrentState[id]
         const target = { chat: current.message.chat.id, message: current.message.message_id }
 
-        const jsx = await InternalError<C>({ error, id, retry: async () => { await globalStates.get(id)?.rerender() } })
+        const jsx = await InternalError({ error, id, retry: async () => { await globalStates.get(id)?.rerender() } })
         const render = await createMessageRender({ id, method: createErrorMessageState.name, jsx, ctx, other: {} as any }), hash = createHash(render)
 
         if (hash !== previous.hash) return

@@ -1,5 +1,3 @@
-import type { ReactiveContext } from "../../../types/plugin.types"
-
 /**
  * Renders the internal fallback error UI for failed lifecycle sessions.
  *
@@ -19,7 +17,7 @@ import type { ReactiveContext } from "../../../types/plugin.types"
  * @param {{ error: Error; id: string }} props - Error display payload.
  * @returns {JSX.Element} The formatted internal error message view.
  */
-export function InternalError<C extends ReactiveContext>({ error, id, retry }: { error: Error, id?: string, retry?: () => Promise<void>; }) {
+export function InternalError({ error, id, retry }: { error: Error, id?: string, retry?: () => Promise<void>; }) {
     const stack = error.stack || `${error.name}: ${error.message}\n    at unknown`
     return <>
         <h>⚠️ Internal Error</h>

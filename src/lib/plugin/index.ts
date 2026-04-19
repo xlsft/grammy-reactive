@@ -1,5 +1,5 @@
 import type { MiddlewareFn, NextFunction } from "grammy";
-import type { PluginOptions, ReactiveContext, ReactiveContextFlavor } from "../../types/plugin.types";
+import type { ReactiveContext, ReactiveContextFlavor } from "../../types/plugin.types";
 import { createOnClickEvent } from "../state/events/onclick.event";
 import { globalCurrentState } from "../../utils";
 import { Composer } from "grammy";
