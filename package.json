@@ -51,10 +51,12 @@
     ],
     "scripts": {
         "dev": "bun run --watch examples/main.tsx",
+        "test": "bun test tests",
         "build": "tsc -p tsconfig.build.json",
-        "release": "npm run build && npm version patch && npm publish --access public"
+        "release": "npm run test && npm run build && npm version patch && npm publish --access public"
     },
     "devDependencies": {
+        "@types/bun": "^1.3.12",
         "@types/node": "^25.6.0",
         "typescript": "^5"
     },
