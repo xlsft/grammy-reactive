@@ -1,3 +1,4 @@
+import type { CycleState } from "src/types/lib.types"
 import { InternalError } from "../../../lib/render/components/Error"
 import { createMessageRender } from "../../../lib/render/message.render"
 import type { ReactiveContext } from "../../../types/plugin.types"
@@ -27,13 +28,13 @@ export async function createErrorMessageState<C extends ReactiveContext>({ id, c
     id: string,
     ctx: C,
     error: Error,
-}) {
+}): Promise<CycleState | undefined> {
     try {
         if (!globalCurrentState[id] || !globalPreviousState[id]) return
         const previous = globalPreviousState[id], current = globalCurrentState[id]
         const target = { chat: current.message.chat.id, message: current.message.message_id }
 
-        const jsx = await InternalError<C>({ error, id, retry: async () => await globalStates.get(id)?.rerender() })
+        const jsx = await InternalError<C>({ error, id, retry: async () => { await globalStates.get(id)?.rerender() } })
         const render = await createMessageRender({ id, method: createErrorMessageState.name, jsx, ctx, other: {} as any }), hash = createHash(render)
 
         if (hash !== previous.hash) return
@@ -47,6 +48,7 @@ export async function createErrorMessageState<C extends ReactiveContext>({ id, c
 
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
+        return globalCurrentState[id]
     } catch (e) {
         console.error(e)
     }

@@ -10,17 +10,24 @@ import type { ReactiveContext } from "./plugin.types";
 export type HookRuntime = {
     id: string
     ctx: ReactiveContext
-    state: BotHandlerLifecycleInstance<ReactiveContext>
-    hooks: Map<string, unknown[]>
-    componentPath: number[]
-    childCursorStack: number[]
-    hookCursor: number
+    state: Partial<BotHandlerLifecycleInstance<ReactiveContext>>
+    hooks: {
+        map: Map<string, unknown[]>
+        cursor: number
+        async: Map<string, AsyncCacheEntry<any>>
+    }
+    component: {
+        paths: number[]
+        cursors: number[]
+        rendered: Set<string>
+    }
     effects: Array<() => Promise<void>>;
-    visited: Set<string>
-    renderVersion: number
-    isRendering: boolean
-    pendingRender: boolean
-    asyncCache: Map<string, AsyncCacheEntry<any>>
+    version: number
+    status: {
+        rendering: boolean
+        pending: boolean
+    }
+
 };
 
 /**

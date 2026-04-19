@@ -1,11 +1,11 @@
 import type { MiddlewareFn, NextFunction } from "grammy";
 import type { PluginOptions, ReactiveContext, ReactiveContextFlavor } from "../../types/plugin.types";
 import { createOnClickEvent } from "../state/events/onclick.event";
-import { generateUniqueId } from "../../utils";
-import { createMessageRender } from "../render/message.render";
-import { JSXParseError } from "../../jsx/runtime/jsx.errors";
+import { generateUniqueId, globalCurrentState, globalHookRuntimeAsyncStorage, isAbortError } from "../../utils";
 import { Composer } from "grammy";
-import type { RequiredUnion } from "../../types/utils.types";
+import { createMessageState } from "../state/create.state";
+import type { Message } from "grammy/types";
+import { createHookRuntime } from "src/utils/createHookRuntime";
 
 /**
  * Creates the reactive middleware plugin.
@@ -48,8 +48,8 @@ export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>):
         next: NextFunction
     ) => {
         ctx.reply = async function reply(content, other, signal) {
-            const dispatch = async (content: string) => {
-                if (!ctx.chat) throw new Error("Cannot reply to a message without a chat")
+            if (!ctx.chat) throw new Error("Cannot reply to a message without a chat")
+            if (typeof content === "string") {
                 return await ctx.api.sendMessage(ctx.chat.id, content, {
                     business_connection_id: ctx.businessConnectionId,
                     ...(ctx.msg?.is_topic_message
@@ -58,21 +58,13 @@ export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>):
                     direct_messages_topic_id: ctx.msg?.direct_messages_topic?.topic_id,
                     ...other,
                 }, signal as any)
-            }
-            if (typeof content === "string") {
-                return await dispatch(content)
             } else {
                 const id = generateUniqueId()
-                const message = await createMessageRender<
-                    typeof ctx, RequiredUnion<typeof other>
-                >({
-                    method: "repl", id,
-                    jsx: content, ctx, other: {},
-                    unallowed: ['media']
-                })
-                other = message.other
-                if (!message) throw new JSXParseError("No message rendered")
-                return await dispatch(message.text)
+                const state = createMessageState({ id, ctx, handler: async () => await content })
+                await state.mount()
+                const current = globalCurrentState[id]
+                if (!current) throw new Error("Failed to render message")
+                return current.message as Message.TextMessage
             }
         };
         return await createComposerMiddleware(ctx, next)

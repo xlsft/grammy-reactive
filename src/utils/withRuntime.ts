@@ -26,23 +26,23 @@ import { globalHookRuntimeAsyncStorage } from "./global";
  * @param {() => Promise<void>} callback - The render pass to execute.
  * @returns {Promise<void>}
  */
-export function withRuntime<C extends ReactiveContext>(
+export function withRuntime(
     runtime: HookRuntime,
     callback: () => Promise<void>
 ) {
     return globalHookRuntimeAsyncStorage.run(runtime, async () => {
-        runtime.componentPath = [];
-        runtime.childCursorStack = [0];
-        runtime.hookCursor = 0;
-        runtime.visited.clear();
+        runtime.component.paths = [];
+        runtime.component.cursors = [0];
+        runtime.hooks.cursor = 0;
+        runtime.component.rendered.clear();
 
-        runtime.visited.add("");
+        runtime.component.rendered.add("");
 
         await callback();
 
-        for (const key of runtime.hooks.keys()) {
-            if (!runtime.visited.has(key)) {
-                runtime.hooks.delete(key);
+        for (const key of runtime.hooks.map.keys()) {
+            if (!runtime.component.rendered.has(key)) {
+                runtime.hooks.map.delete(key);
             }
         }
     });

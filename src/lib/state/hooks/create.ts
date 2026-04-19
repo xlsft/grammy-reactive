@@ -18,15 +18,15 @@ import { globalHookRuntimeAsyncStorage } from "../../../utils";
  */
 export function createHook() {
     const runtime = globalHookRuntimeAsyncStorage.getStore()!;
-    const key = runtime.componentPath.join(".");
+    const key = runtime.component.paths.join(".");
 
-    let hooks = runtime.hooks.get(key);
+    let hooks = runtime.hooks.map.get(key);
     if (!hooks) {
         hooks = [];
-        runtime.hooks.set(key, hooks);
+        runtime.hooks.map.set(key, hooks);
     }
 
-    const index = runtime.hookCursor++;
+    const index = runtime.hooks.cursor++;
 
     return { runtime, key, hooks, index }
 }

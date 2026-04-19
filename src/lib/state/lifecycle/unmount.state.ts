@@ -8,7 +8,7 @@ export async function createUnmountMessageState<C extends ReactiveContext>({ id,
     ctx: C;
     controller: AbortController
     state: BotHandlerLifecycleInstance<C>
-}) {
+}): Promise<void> {
     try {
         await cleanupEffects()
         if (!globalCurrentState[id]) return

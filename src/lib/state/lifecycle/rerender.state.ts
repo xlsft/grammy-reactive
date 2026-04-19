@@ -1,4 +1,4 @@
-import type { BotHandlerLifecycleInstance, BotMessageHandler } from "../../../types/lib.types"
+import type { BotHandlerLifecycleInstance, BotMessageHandler, CycleState } from "../../../types/lib.types"
 import { globalCurrentState, globalHookRuntimeAsyncStorage, globalPreviousState, isMessageNotFound } from "../../../utils"
 import { createMessageRender } from "../../../lib/render/message.render"
 import type { ReactiveContext } from "../../../types/plugin.types"
@@ -11,14 +11,14 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
     handler: BotMessageHandler<C>,
     controller?: AbortController,
     state: BotHandlerLifecycleInstance<C>
-}) {
+}): Promise<CycleState | undefined> {
     try {
         let committed = false; if (!globalCurrentState[id] || !globalPreviousState[id] || controller?.signal.aborted) return
         const previous = globalPreviousState[id], current = globalCurrentState[id]
         const target = { chat: current.message.chat.id, message: current.message.message_id }
-        const runtime = globalHookRuntimeAsyncStorage.getStore()!, version = ++runtime.renderVersion;
+        const runtime = globalHookRuntimeAsyncStorage.getStore()!, version = ++runtime.version;
 
-        const jsx = safeHandler({ handler, ctx, id, controller }); if (version !== runtime.renderVersion) return
+        const jsx = safeHandler({ handler, ctx, id, controller }); if (version !== runtime.version) return
         const render = await createMessageRender({ id, method: createRerenderMessageState.name, jsx, ctx, other: previous.render.other ?? {} }), hash = createHash(render)
 
         if (hash === previous.hash) return
@@ -52,6 +52,7 @@ export async function createRerenderMessageState<C extends ReactiveContext>({ id
 
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
+        return globalCurrentState[id]
     } catch (e) {
         if (isAbortError(e) && isMessageNotFound(e)) return;
         console.error(e)

@@ -71,6 +71,17 @@ export type BotHandlerLifecycle<C extends ReactiveContext> = (ctx: C) => {
     controller: AbortController;
 };
 
+export type LifecycleReturn<C extends ReactiveContext> = ReturnType<BotHandlerLifecycle<C>> extends infer R
+    ? R extends { controller: AbortController }
+        ? {
+            [K in keyof Omit<R, 'controller'>]:
+                Omit<R, 'controller'>[K] extends (...args: any) => any
+                    ? ReturnType<Omit<R, 'controller'>[K]>
+                    : never
+        }[keyof Omit<R, 'controller'>]
+        : never
+    : never;
+
 /**
  * Resolves the concrete lifecycle instance returned by
  * {@link BotHandlerLifecycle}.

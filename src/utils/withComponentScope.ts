@@ -26,25 +26,26 @@ export async function withComponentScope<T>(
     callback: () => Promise<T>
 ): Promise<T> {
     const runtime = globalHookRuntimeAsyncStorage.getStore()!;
-    const level = runtime.childCursorStack.length - 1;
-    const current = runtime.childCursorStack[level] ?? 0;
+    if (!runtime) throw new Error("No runtime found");
+    const level = runtime.component.cursors.length - 1;
+    const current = runtime.component.cursors[level] ?? 0;
     const previous = {
-        path: [...runtime.componentPath],
-        children: [...runtime.childCursorStack],
-        cursor: runtime.hookCursor,
+        path: [...runtime.component.paths],
+        children: [...runtime.component.cursors],
+        cursor: runtime.hooks.cursor,
     };
 
-    runtime.childCursorStack[level] = current + 1;
-    runtime.componentPath.push(current);
-    runtime.visited.add(runtime.componentPath.join("."));
-    runtime.childCursorStack.push(0);
-    runtime.hookCursor = 0;
+    runtime.component.cursors[level] = current + 1;
+    runtime.component.paths.push(current);
+    runtime.component.rendered.add(runtime.component.paths.join("."));
+    runtime.component.cursors.push(0);
+    runtime.hooks.cursor = 0;
 
     try {
         return await callback();
     } finally {
-        runtime.componentPath = previous.path;
-        runtime.childCursorStack = previous.children;
-        runtime.hookCursor = previous.cursor;
+        runtime.component.paths = previous.path;
+        runtime.component.cursors = previous.children;
+        runtime.hooks.cursor = previous.cursor;
     }
 }

@@ -2,7 +2,6 @@ import type { Context } from "grammy";
 import type { OtherContexted } from "./grammy.types";
 import type { JSX } from "./jsx.types";
 import type { Message } from "grammy/types";
-import type { MaybeArray } from "./utils.types";
 
 // ! Options
 
@@ -66,7 +65,7 @@ export interface ReactiveContextExtension {
      * Optional AbortSignal to cancel the request
      */
     reply(
-        jsx: MaybeArray<JSX.Element>,
+        jsx: JSX.Element | Promise<JSX.Element>,
         other?: OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">,
         signal?: AbortSignal
     ): Promise<Message.TextMessage>;

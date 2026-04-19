@@ -1,4 +1,4 @@
-import type { BotHandlerLifecycleInstance, BotMessageHandler } from "../../../types/lib.types"
+import type { BotHandlerLifecycleInstance, BotMessageHandler, CycleState } from "../../../types/lib.types"
 import { createMessageRender } from "../../../lib/render/message.render"
 import { globalCurrentState, globalPreviousState } from "../../../utils"
 import type { ReactiveContext } from "../../../types/plugin.types"
@@ -11,7 +11,7 @@ export async function createMountMessageState<C extends ReactiveContext>({ id, c
     handler: BotMessageHandler<C>,
     controller?: AbortController,
     state: BotHandlerLifecycleInstance<C>
-}) {
+}): Promise<CycleState | undefined> {
     try {
         const target = { chat: ctx.chat?.id }
         if (!target.chat) throw new Error("Target chat not found")
@@ -37,6 +37,7 @@ export async function createMountMessageState<C extends ReactiveContext>({ id, c
 
         if (!globalCurrentState[id]) throw new Error("No state rendered")
         globalPreviousState[id] = globalCurrentState[id]
+        return globalCurrentState[id]
     } catch (e) {
         if (isAbortError(e)) return;
         console.error(e)

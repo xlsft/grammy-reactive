@@ -16,9 +16,9 @@ export function useAsync<T>(keyOrHandler: string | (() => Promise<T>), handlerOr
         handler = keyOrHandler; deps = (handlerOrDeps as unknown[]) ?? []; key = `${componentKey}:${index}`;
     }
 
-    if (!runtime.asyncCache.has(key)) runtime.asyncCache.set(key, { value: null, error: null, promise: null });
+    if (!runtime.hooks.async.has(key)) runtime.hooks.async.set(key, { value: null, error: null, promise: null });
 
-    const entry = runtime.asyncCache.get(key)!;
+    const entry = runtime.hooks.async.get(key)!;
 
     const [state, setState] = useState({
         value: entry.value,

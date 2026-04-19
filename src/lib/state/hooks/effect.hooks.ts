@@ -79,7 +79,7 @@ export async function cleanupEffects(): Promise<void> {
     const runtime = globalHookRuntimeAsyncStorage.getStore();
     if (!runtime) return;
 
-    for (const hooks of runtime.hooks.values()) {
+    for (const hooks of runtime.hooks.map.values()) {
         for (const hook of hooks) {
             const effect = hook as { cleanup?: () => void | Promise<void> };
             if (effect?.cleanup) {
