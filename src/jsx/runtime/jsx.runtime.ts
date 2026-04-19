@@ -2,6 +2,7 @@ import type {
     Element as _Element,
     IntrinsicElements as _IntrinsicElements,
     Component as _Component,
+    Node as _Node,
 } from "../../types/jsx.types.ts"
 import { createRoot, createFragment } from "./jsx"
 
@@ -20,6 +21,7 @@ export {
  * intrinsic tags, props inference, and children handling.
  */
 export namespace JSX {
+    export type Node = _Node
     export type Element = _Element | Promise<_Element>
     export type ElementType = keyof _IntrinsicElements | _Component
     export interface ElementAttributesProperty { props: {} }

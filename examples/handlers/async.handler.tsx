@@ -1,3 +1,4 @@
+import { Title } from "../components/Title"
 import { defineMessageHandler, useMemo, useState, useAsync } from "../../src/lib"
 
 type Data = {
@@ -18,7 +19,8 @@ export default defineMessageHandler(async () => {
         return [page === 1, page === pages || pages === 0]
     }, [data.value, page])
     return <>
-        {data.pending || !slice ? 'Loading...' : <>
+        // 'Title' components don't accept text as child elements. Text in JSX has the type 'string', but the expected type of 'children' is 'Element'.
+        {data.pending || !slice ? <Title>Loading</Title> : <>
             {slice.map(item => <b>
                 {JSON.stringify(item)}<br/><br/>
             </b>)}
