@@ -272,10 +272,17 @@ describe("Message renders", () => {
             entity: { type: "media", src: "photo.jpg" },
             children: []
         }));
+        const longText = "a".repeat(5000);
         const result = await createMessageRender({
             id: "test",
             method: "sendMessage",
-            jsx: Promise.resolve({ type: "fragment", children: mediaElements } as any),
+            jsx: Promise.resolve({
+                type: "fragment",
+                children: [
+                    { type: "fragment", children: mediaElements },
+                    { type: "plain", value: longText }
+                ]
+            } as any),
             ctx: createMockCtx(),
             other: {},
         });
