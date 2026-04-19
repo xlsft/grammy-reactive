@@ -64,6 +64,7 @@ export type RenderedViewType = "message" | "caption";
  * @template {ReactiveContext} C
  */
 export type BotHandlerLifecycle<C extends ReactiveContext> = (ctx: C) => {
+    id: string
     mount: () => Promise<void>;
     rerender: () => Promise<void>;
     unmount: () => Promise<void>;

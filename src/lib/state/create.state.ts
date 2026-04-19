@@ -2,17 +2,18 @@ import type { BotHandlerLifecycleInstance, BotMessageHandler } from "../../types
 import { createRerenderMessageState } from "./lifecycle/rerender.state";
 import { createUnmountMessageState } from "./lifecycle/unmount.state";
 import type { ReactiveContext } from "../../types/plugin.types";
-import { globalAbortControllers, globalStates, withRuntime, createHookRuntime } from "../../utils";
+import { globalAbortControllers, globalStates, withRuntime, createHookRuntime, generateUniqueId } from "../../utils";
 import { createMountMessageState } from "./lifecycle/mount.state";
 import { createErrorMessageState } from "./lifecycle/error.state";
 
-export function createMessageState<C extends ReactiveContext>({ id, ctx, handler }: {
-    id: string,
+export function createMessageState<C extends ReactiveContext>({ctx, handler }: {
     ctx: C,
     handler: BotMessageHandler<C>,
 }): BotHandlerLifecycleInstance<C> {
+    const id = generateUniqueId()
     const existing = globalStates.get(id); if (existing) return existing;
     const state: BotHandlerLifecycleInstance<C> = {
+        id,
         get controller() {
             if (!globalAbortControllers.has(id)) globalAbortControllers.set(id, new AbortController());
             return globalAbortControllers.get(id)!;

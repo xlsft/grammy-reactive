@@ -9,8 +9,7 @@ export function defineMessageHandler<C extends ReactiveContext>(
     handler: BotMessageHandler<C>
 ): (ctx: C) => Promise<void> {
     return async (ctx: C) => {
-        const id = generateUniqueId()
-        const state = createMessageState({ id, ctx, handler })
+        const state = createMessageState({ ctx, handler })
         try {
             await state.mount()
         } catch (e) {

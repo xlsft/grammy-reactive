@@ -59,13 +59,13 @@ export interface ReactiveContextExtension {
      * Context-aware alias for api.sendMessage with JSX support. Use this method to send text messages with JSX markup.
      * On success, the sent Message is returned.
      *
-     * @param jsx  — JSX of the message to be sent, 1-4096 characters after entities parsing and render
+     * @param jsx  — callback that returns JSX of the message to be sent, 1-4096 characters after entities parsing and render
      * @param other — Optional remaining parameters, confer the official reference below
      * @param signal
      * Optional AbortSignal to cancel the request
      */
     reply(
-        jsx: JSX.Element | Promise<JSX.Element>,
+        jsx: <C extends ReactiveContext>(ctx: C) => JSX.Element | Promise<JSX.Element>,
         other?: OtherContexted<"sendMessage", "text" | "chat_id" | "parse_mode">,
         signal?: AbortSignal
     ): Promise<Message.TextMessage>;

@@ -31,13 +31,12 @@ import type { Message } from "grammy/types";
  *
  * @example
  * ```tsx
- * await ctx.reply(
+ * await ctx.reply(() => (
  *   <b>Hello from JSX</b>
- * )
+ * ))
  * ```
  */
 export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>): MiddlewareFn<ReactiveContextFlavor<C>> {
-
     const composer = new Composer<ReactiveContextFlavor<C>>()
     composer.on("callback_query:data", createOnClickEvent)
 
@@ -50,21 +49,15 @@ export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>):
             if (!ctx.chat) throw new Error("Cannot reply to a message without a chat")
             if (typeof content === "string") {
                 return await ctx.api.sendMessage(ctx.chat.id, content, {
-                    business_connection_id: ctx.businessConnectionId,
-                    ...(ctx.msg?.is_topic_message
-                        ? { message_thread_id: ctx.msg.message_thread_id }
-                        : {}),
+                    business_connection_id: ctx.businessConnectionId, ...(ctx.msg?.is_topic_message ? { message_thread_id: ctx.msg.message_thread_id } : {}),
                     direct_messages_topic_id: ctx.msg?.direct_messages_topic?.topic_id,
                     ...other,
                 }, signal as any)
-            } else {
-                const id = generateUniqueId()
-                const state = createMessageState({ id, ctx, handler: async () => await content })
-                await state.mount()
-                const current = globalCurrentState[id]
-                if (!current) throw new Error("Failed to render message")
+            } else if (typeof content === "function") {
+                const state = createMessageState({ ctx, handler: () => content(ctx) }); await state.mount()
+                const current = globalCurrentState[state.id]; if (!current) throw new Error("Failed to render message")
                 return current.message as Message.TextMessage
-            }
+            } else throw new Error("Invalid content type")
         };
         return await createComposerMiddleware(ctx, next)
     }
