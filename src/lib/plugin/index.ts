@@ -1,7 +1,7 @@
 import type { MiddlewareFn, NextFunction } from "grammy";
 import type { PluginOptions, ReactiveContext, ReactiveContextFlavor } from "../../types/plugin.types";
 import { createOnClickEvent } from "../state/events/onclick.event";
-import { generateUniqueId, globalCurrentState } from "../../utils";
+import { globalCurrentState } from "../../utils";
 import { Composer } from "grammy";
 import { createMessageState } from "../state/create.state";
 import type { Message } from "grammy/types";
@@ -36,7 +36,7 @@ import type { Message } from "grammy/types";
  * ))
  * ```
  */
-export function reactive<C extends ReactiveContext>(options?: PluginOptions<C>): MiddlewareFn<ReactiveContextFlavor<C>> {
+export function reactive<C extends ReactiveContext>(): MiddlewareFn<ReactiveContextFlavor<C>> {
     const composer = new Composer<ReactiveContextFlavor<C>>()
     composer.on("callback_query:data", createOnClickEvent)
 

@@ -1,6 +1,5 @@
 import { type BotMessageHandler } from "../types/lib.types";
 import { reactive } from "./plugin";
-import { generateUniqueId } from "../utils";
 import { createMessageState } from "./state/create.state";
 import type { ReactiveContext } from "../types/plugin.types";
 import { isAbortError } from "../utils";

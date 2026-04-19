@@ -18,7 +18,7 @@ import type { Message } from "grammy/types";
  *
  * };
  */
-export type PluginOptions<C extends Context> = {
+export type PluginOptions = {
 
 } | undefined;
 
