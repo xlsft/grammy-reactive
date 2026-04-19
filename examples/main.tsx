@@ -13,4 +13,14 @@ bot.command("calculator", calculatorHandler);
 bot.command("timer", timerHandler)
 bot.command("async", asyncHandler)
 
+bot.command("static_text", async (ctx) => {
+    await ctx.reply("This is a text command");
+});
+
+bot.command("static_jsx", async (ctx) => {
+    await ctx.reply(() => <>
+        <b>This is a jsx command</b>
+    </>);
+});
+
 bot.start()
