@@ -59,7 +59,7 @@ export function useState<T>(initial: T): [T, (value: T | ((prev: T) => T)) => Pr
                 ? (next as (prev: T) => T)(prev)
                 : next;
 
-        await runtime.state.rerender();
+        if (runtime.state.rerender) await runtime.state.rerender();
     };
 
     return [hooks[index] as T, setValue];
